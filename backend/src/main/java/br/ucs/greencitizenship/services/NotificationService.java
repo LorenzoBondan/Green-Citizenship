@@ -17,8 +17,8 @@ public class NotificationService {
     private final NotificationRepository repository;
     private final NotificationDtoToEntityAdapter adapter;
 
-    public Page<NotificationDTO> findAllByUserId(Pageable pageable, Integer userId){
-        Page<Notification> list = repository.findByUserId(pageable, userId);
+    public Page<NotificationDTO> findAllByUserId(Integer userId, Pageable pageable){
+        Page<Notification> list = repository.findByUserId(userId, pageable);
         return list.map(adapter::toDto);
     }
 
@@ -28,11 +28,10 @@ public class NotificationService {
         return adapter.toDto(entity);
     }
 
-    public NotificationDTO updateIsRead(Integer notificationId, Boolean isRead){
+    public void updateIsRead(Integer notificationId){
         Notification entity = repository.findById(notificationId)
                 .orElseThrow(() -> new ResourceNotFoundException("Id not found: " + notificationId));
-        entity.setIsRead(isRead);
+        entity.setIsRead(!entity.getIsRead());
         repository.save(entity);
-        return adapter.toDto(entity);
     }
 }
