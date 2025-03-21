@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -104,7 +105,7 @@ public class UserController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CITIZEN')")
     @PostMapping
     public ResponseEntity<?> create(
-            @RequestBody
+            @Valid  @RequestBody
             @Schema(
                     description = "User object for creation",
                     requiredProperties = "name, email, password",
@@ -137,7 +138,7 @@ public class UserController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CITIZEN')")
     @PutMapping
     public ResponseEntity<?> update(
-            @RequestBody
+            @Valid @RequestBody
             @Schema(
                     description = "User object for editing",
                     requiredProperties = "id, name, password, email",

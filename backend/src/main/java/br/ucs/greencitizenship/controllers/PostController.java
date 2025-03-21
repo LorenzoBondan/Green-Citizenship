@@ -1,7 +1,7 @@
 package br.ucs.greencitizenship.controllers;
 
-import br.ucs.greencitizenship.dtos.category.CategoryDTO;
-import br.ucs.greencitizenship.services.CategoryService;
+import br.ucs.greencitizenship.dtos.post.PostDTO;
+import br.ucs.greencitizenship.services.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -16,31 +16,33 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "Category")
+@Tag(name = "Post")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/category")
-public class CategoryController {
+@RequestMapping("/api/post")
+public class PostController {
 
-    private final CategoryService service;
+    private final PostService service;
 
-    @Operation(summary = "Search all Categories", method = "GET", description = "Search for all objects")
+    @Operation(summary = "Search all Posts by Title and Category", method = "GET", description = "Search for all objects")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Ok"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden")
     })
     @Transactional(readOnly = true)
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CITIZEN')")
     @GetMapping
-    public ResponseEntity<?> findAll(Pageable pageable){
-        return ResponseEntity.ok(service.findAll(pageable));
+    public ResponseEntity<?> findAllByTitleAndCategory(
+            @RequestParam(value = "title", required = false, defaultValue = "") String title,
+            @RequestParam(value = "categoryId", required = false) Integer categoryId,
+            Pageable pageable){
+        return ResponseEntity.ok(service.findAllByTitleAndCategory(title, categoryId, pageable));
     }
 
     /**
-     * @param id represents the ID of the Category to be searched
+     * @param id represents the ID of the Post to be searched
      */
-    @Operation(summary = "Search a Category by id", method = "GET", description = "Search for an object by id, regardless of its status")
+    @Operation(summary = "Search a Post by id", method = "GET", description = "Search for an object by id, regardless of its status")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Ok"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
@@ -48,16 +50,15 @@ public class CategoryController {
             @ApiResponse(responseCode = "404", description = "Not found")
     })
     @Transactional(readOnly = true)
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CITIZEN')")
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> findById(@PathVariable("id") Integer id){
         return ResponseEntity.ok(service.findById(id));
     }
 
     /**
-     * @param dto represents the Category object to be created
+     * @param dto represents the Post object to be created
      */
-    @Operation(summary = "Insert a new Category", method = "POST")
+    @Operation(summary = "Insert a new Post", method = "POST")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created"),
             @ApiResponse(responseCode = "400", description = "Bad Request"),
@@ -67,27 +68,37 @@ public class CategoryController {
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity")
     })
     @Transactional
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CITIZEN')")
     @PostMapping
     public ResponseEntity<?> create(
-            @Valid  @RequestBody
+            @Valid @RequestBody
             @Schema(
-                    description = "Category object for creation",
-                    requiredProperties = "name",
+                    description = "Post object for creation",
+                    requiredProperties = "author.id, category.id, title, description",
                     example = """
                     {
-                        "name": "Name"
+                        "author": {
+                            "id": 1
+                        },
+                        "category": {
+                            "id": 1
+                        },
+                        "title": "title",
+                        "description": "description",
+                        "date": "2025-01-01T00:00:00",
+                        "status": "IN_REVISION",
+                        "isUrgent": false
                     }
                     """
             )
-            CategoryDTO dto){
+            PostDTO dto){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.insert(dto));
     }
 
     /**
-     * @param dto represents the Category object to be updated
+     * @param dto represents the Post object to be updated
      */
-    @Operation(summary = "Update a Category", method = "PUT")
+    @Operation(summary = "Update a Post", method = "PUT")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Ok"),
             @ApiResponse(responseCode = "400", description = "Bad Request"),
@@ -98,28 +109,38 @@ public class CategoryController {
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity")
     })
     @Transactional
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CITIZEN')")
     @PutMapping
     public ResponseEntity<?> update(
             @Valid @RequestBody
             @Schema(
-                    description = "Category object for editing",
-                    requiredProperties = "id, name",
+                    description = "Post object for editing",
+                    requiredProperties = "id, author.id, category.id, title, description",
                     example = """
                     {
                         "id": 1,
-                        "name": "Name"
+                        "author": {
+                            "id": 1
+                        },
+                        "category": {
+                            "id": 1
+                        },
+                        "title": "title",
+                        "description": "description",
+                        "date": "2025-01-01T00:00:00",
+                        "status": "IN_REVISION",
+                        "isUrgent": false
                     }
                     """
             )
-            CategoryDTO dto){
+            PostDTO dto){
         return ResponseEntity.ok(service.update(dto));
     }
 
     /**
-     * @param id Category id to be removed
+     * @param id Post id to be removed
      */
-    @Operation(summary = "Delete a Category", method = "DELETE", description = "The object is deleted from database")
+    @Operation(summary = "Delete a Post", method = "DELETE", description = "The object is deleted from database")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "No content"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
@@ -127,7 +148,7 @@ public class CategoryController {
             @ApiResponse(responseCode = "409", description = "Integrity violation")
     })
     @Transactional
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CITIZEN')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> remove(@PathVariable("id") Integer id){
         service.delete(id);

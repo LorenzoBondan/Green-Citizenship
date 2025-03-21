@@ -1,0 +1,58 @@
+package br.ucs.greencitizenship.dtos.post;
+
+import br.ucs.greencitizenship.dtos.Convertable;
+import br.ucs.greencitizenship.dtos.category.CategoryDtoToEntityAdapter;
+import br.ucs.greencitizenship.dtos.enums.StatusEnumDTO;
+import br.ucs.greencitizenship.dtos.user.UserDTO;
+import br.ucs.greencitizenship.dtos.user.UserDtoToEntityAdapter;
+import br.ucs.greencitizenship.entities.Category;
+import br.ucs.greencitizenship.entities.Post;
+import br.ucs.greencitizenship.entities.User;
+import br.ucs.greencitizenship.entities.enums.StatusEnum;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
+
+@Component
+@RequiredArgsConstructor
+public class PostDtoToEntityAdapter implements Convertable<Post, PostDTO> {
+
+    private final UserDtoToEntityAdapter userDtoToEntityAdapter;
+    private final CategoryDtoToEntityAdapter categoryDtoToEntityAdapter;
+
+    @Override
+    public Post toEntity(PostDTO dto) {
+        return Post.builder()
+                .id(dto.getId())
+                .author(new User(dto.getAuthor().getId()))
+                .category(new Category(dto.getCategory().getId()))
+                .title(dto.getTitle())
+                .description(dto.getDescription())
+                .date(dto.getDate())
+                .status(StatusEnum.valueOf(dto.getStatus().name()))
+                .isUrgent(dto.getIsUrgent())
+                .build();
+    }
+
+    @Override
+    public PostDTO toDto(Post entity) {
+        return PostDTO.builder()
+                .id(entity.getId())
+                .author(Optional.ofNullable(entity.getAuthor())
+                        .map(userDtoToEntityAdapter::toDto)
+                        .orElse(null))
+                .category(Optional.ofNullable(entity.getCategory())
+                        .map(categoryDtoToEntityAdapter::toDto)
+                        .orElse(null))
+                .title(entity.getTitle())
+                .description(entity.getDescription())
+                .date(Optional.ofNullable(entity.getDate()).orElse(LocalDateTime.now()))
+                .status(Optional.ofNullable(entity.getStatus())
+                        .map(statusEnum -> StatusEnumDTO.valueOf(statusEnum.name()))
+                        .orElse(null))
+                .isUrgent(Optional.ofNullable(entity.getIsUrgent()).orElse(Boolean.FALSE))
+                .build();
+    }
+}

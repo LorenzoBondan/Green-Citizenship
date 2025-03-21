@@ -24,6 +24,8 @@ public class UserDTO {
     @Size(min = 3, max = 50, message = "Email must have at least 3 characters and max 50")
     @Email
     private String email;
+    @NotBlank
+    @Size(min = 3, max = 30)
     private String password;
 
     private List<RoleDTO> roles = new ArrayList<>();

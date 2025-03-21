@@ -1,5 +1,7 @@
-package br.ucs.greencitizenship.dtos.notification;
+package br.ucs.greencitizenship.dtos.post;
 
+import br.ucs.greencitizenship.dtos.category.CategoryDTO;
+import br.ucs.greencitizenship.dtos.enums.StatusEnumDTO;
 import br.ucs.greencitizenship.dtos.user.UserDTO;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
@@ -14,19 +16,25 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Setter
 @Getter
-public class NotificationDTO {
+public class PostDTO {
 
     private Integer id;
     @NotNull
-    private UserDTO user;
+    private UserDTO author;
+    @NotNull
+    private CategoryDTO category;
     @NotBlank
-    @Size(max = 300)
-    private String text;
+    @Size(max = 50)
+    private String title;
+    @NotBlank
+    @Size(max = 500)
+    private String description;
     @FutureOrPresent
     private LocalDateTime date = LocalDateTime.now();
-    private Boolean isRead = Boolean.FALSE;
+    private StatusEnumDTO status;
+    private Boolean isUrgent = Boolean.FALSE;
 
-    public NotificationDTO(Integer id) {
+    public PostDTO(Integer id) {
         this.id = id;
     }
 }
