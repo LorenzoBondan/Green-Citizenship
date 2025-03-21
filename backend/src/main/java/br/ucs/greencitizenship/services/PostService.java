@@ -18,6 +18,7 @@ public class PostService {
 
     private final PostRepository repository;
     private final PostDtoToEntityAdapter adapter;
+    private final AuthService authService;
 
     public Page<PostDTO> findAllByTitleAndCategory(String title, Integer categoryId, Pageable pageable){
         Page<Post> list = repository.findByTitleAndCategory(title, categoryId, pageable);
@@ -39,6 +40,7 @@ public class PostService {
         if(!repository.existsById(dto.getId())){
             throw new ResourceNotFoundException("Id not found: " + dto.getId());
         }
+        authService.validateSelfOrAdmin(findById(dto.getId()).getAuthor().getId());
         Post entity = adapter.toEntity(dto);
         entity = repository.save(entity);
         return adapter.toDto(entity);
@@ -49,6 +51,7 @@ public class PostService {
             throw new ResourceNotFoundException("Id not found: " + id);
         }
         try{
+            authService.validateSelfOrAdmin(findById(id).getAuthor().getId());
             repository.deleteById(id);
         } catch(DataIntegrityViolationException e) {
             throw new DataBaseException("Integrity violation");

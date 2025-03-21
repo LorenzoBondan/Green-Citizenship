@@ -16,8 +16,10 @@ public class NotificationService {
 
     private final NotificationRepository repository;
     private final NotificationDtoToEntityAdapter adapter;
+    private final AuthService authService;
 
     public Page<NotificationDTO> findAllByUserId(Integer userId, Pageable pageable){
+        authService.validateSelfOrAdmin(userId);
         Page<Notification> list = repository.findByUserId(userId, pageable);
         return list.map(adapter::toDto);
     }
@@ -31,6 +33,7 @@ public class NotificationService {
     public void updateIsRead(Integer notificationId){
         Notification entity = repository.findById(notificationId)
                 .orElseThrow(() -> new ResourceNotFoundException("Id not found: " + notificationId));
+        authService.validateSelfOrAdmin(entity.getUser().getId());
         entity.setIsRead(!entity.getIsRead());
         repository.save(entity);
     }

@@ -34,11 +34,13 @@ public class UserService implements UserDetailsService {
 
     public UserDTO findById(Integer id){
         User entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User Id not found: " + id));
+        authService.validateSelfOrAdmin(id);
         return adapter.toDto(entity);
     }
 
     public UserDTO findByEmail(String email){
         User entity = repository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User Email not found: " + email));
+        authService.validateSelfOrAdmin(entity.getId());
         return adapter.toDto(entity);
     }
 
@@ -57,6 +59,7 @@ public class UserService implements UserDetailsService {
         if(!repository.existsById(dto.getId())){
             throw new ResourceNotFoundException("Id not found: " + dto.getId());
         }
+        authService.validateSelfOrAdmin(dto.getId());
         User entity = adapter.toEntity(dto);
         entity = repository.save(entity);
         return adapter.toDto(entity);
@@ -67,6 +70,7 @@ public class UserService implements UserDetailsService {
             throw new ResourceNotFoundException("Id not found: " + id);
         }
         try{
+            authService.validateSelfOrAdmin(id);
             repository.deleteById(id);
         } catch(DataIntegrityViolationException e) {
             throw new DataBaseException("Integrity violation");
