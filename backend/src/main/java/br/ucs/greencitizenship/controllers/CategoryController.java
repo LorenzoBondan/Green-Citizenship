@@ -1,7 +1,7 @@
 package br.ucs.greencitizenship.controllers;
 
-import br.ucs.greencitizenship.dtos.user.UserDTO;
-import br.ucs.greencitizenship.services.UserService;
+import br.ucs.greencitizenship.dtos.category.CategoryDTO;
+import br.ucs.greencitizenship.services.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -15,19 +15,15 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-@Tag(name = "User")
+@Tag(name = "Category")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/user")
-public class UserController {
+@RequestMapping("/api/category")
+public class CategoryController {
 
-    private final UserService service;
+    private final CategoryService service;
 
-    @Operation(summary = "Search all Users", method = "GET", description = "Search for all objects")
+    @Operation(summary = "Search all Categories", method = "GET", description = "Search for all objects")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Ok"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
@@ -41,9 +37,9 @@ public class UserController {
     }
 
     /**
-     * @param id represents the ID of the User to be searched
+     * @param id represents the ID of the Category to be searched
      */
-    @Operation(summary = "Search a User by id", method = "GET", description = "Search for an object by id, regardless of its status")
+    @Operation(summary = "Search a Category by id", method = "GET", description = "Search for an object by id, regardless of its status")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Ok"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
@@ -58,40 +54,9 @@ public class UserController {
     }
 
     /**
-     * @param email represents the email of the User to be searched
+     * @param dto represents the Category object to be created
      */
-    @Operation(summary = "Search a User by email", method = "GET", description = "Search for an object by email, regardless of its status")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Ok"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden"),
-            @ApiResponse(responseCode = "404", description = "Not found")
-    })
-    @Transactional
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ANALYST', 'ROLE_OPERATOR')")
-    @GetMapping(value = "/email/{email}")
-    public ResponseEntity<?> findByEmail(@PathVariable("email") String email){
-        return ResponseEntity.ok(service.findByEmail(email));
-    }
-
-    @Operation(summary = "Search the logged User", method = "GET")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Ok"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden"),
-            @ApiResponse(responseCode = "404", description = "Not found")
-    })
-    @Transactional(readOnly = true)
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CITIZEN')")
-    @GetMapping(value = "/me")
-    public ResponseEntity<?> findMe(){
-        return ResponseEntity.ok(service.findMe());
-    }
-
-    /**
-     * @param dto represents the User object to be created
-     */
-    @Operation(summary = "Insert a new User", method = "POST")
+    @Operation(summary = "Insert a new Category", method = "POST")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created"),
             @ApiResponse(responseCode = "400", description = "Bad Request"),
@@ -101,29 +66,27 @@ public class UserController {
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity")
     })
     @Transactional
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CITIZEN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<?> create(
             @RequestBody
             @Schema(
-                    description = "User object for creation",
-                    requiredProperties = "name, email, password",
+                    description = "Category object for creation",
+                    requiredProperties = "name",
                     example = """
                     {
-                        "name": "Name",
-                        "password": "12345",
-                        "email": "email@email.com"
+                        "name": "Name"
                     }
                     """
             )
-            UserDTO dto){
+            CategoryDTO dto){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.insert(dto));
     }
 
     /**
-     * @param dto represents the User object to be updated
+     * @param dto represents the Category object to be updated
      */
-    @Operation(summary = "Update a User", method = "PUT")
+    @Operation(summary = "Update a Category", method = "PUT")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Ok"),
             @ApiResponse(responseCode = "400", description = "Bad Request"),
@@ -134,30 +97,28 @@ public class UserController {
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity")
     })
     @Transactional
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CITIZEN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PutMapping
     public ResponseEntity<?> update(
             @RequestBody
             @Schema(
-                    description = "User object for editing",
-                    requiredProperties = "id, name, password, email",
+                    description = "Category object for editing",
+                    requiredProperties = "id, name",
                     example = """
                     {
                         "id": 1,
-                        "name": "Name",
-                        "password": "12345",
-                        "email": "email@email.com"
+                        "name": "Name"
                     }
                     """
             )
-            UserDTO dto){
+            CategoryDTO dto){
         return ResponseEntity.ok(service.update(dto));
     }
 
     /**
-     * @param id User id to be removed
+     * @param id Category id to be removed
      */
-    @Operation(summary = "Delete a User", method = "DELETE", description = "The object is deleted from database")
+    @Operation(summary = "Delete a Category", method = "DELETE", description = "The object is deleted from database")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "No content"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
