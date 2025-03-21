@@ -27,4 +27,8 @@ public class UserDTO {
     private String password;
 
     private List<RoleDTO> roles = new ArrayList<>();
+
+    public UserDTO(Integer id) {
+        this.id = id;
+    }
 }

@@ -1,6 +1,5 @@
 package br.ucs.greencitizenship.services;
 
-import br.ucs.greencitizenship.dtos.user.UserDtoToEntityAdapter;
 import br.ucs.greencitizenship.entities.User;
 import br.ucs.greencitizenship.repositories.UserRepository;
 import br.ucs.greencitizenship.services.exceptions.ForbiddenException;
@@ -16,7 +15,6 @@ public class AuthService {
 
     private final UserRepository repository;
     private final CustomUserUtil customUserUtil;
-    private final UserDtoToEntityAdapter adapter;
 
     public User authenticated() {
         try {

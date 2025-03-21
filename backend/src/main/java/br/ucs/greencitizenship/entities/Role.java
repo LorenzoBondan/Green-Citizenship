@@ -4,10 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
-import java.io.Serial;
-import java.io.Serializable;
-import java.util.Objects;
-
 @Builder
 @Getter
 @Setter
