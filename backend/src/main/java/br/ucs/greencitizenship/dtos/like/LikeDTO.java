@@ -1,5 +1,6 @@
 package br.ucs.greencitizenship.dtos.like;
 
+import br.ucs.greencitizenship.dtos.comment.CommentDTO;
 import br.ucs.greencitizenship.dtos.post.PostDTO;
 import br.ucs.greencitizenship.dtos.user.UserDTO;
 import jakarta.validation.constraints.NotNull;
@@ -16,7 +17,7 @@ public class LikeDTO {
     @NotNull
     private UserDTO user;
     private PostDTO post;
-    /*private CommentDTO comment;*/
+    private CommentDTO comment;
 
     public LikeDTO(Integer id) {
         this.id = id;

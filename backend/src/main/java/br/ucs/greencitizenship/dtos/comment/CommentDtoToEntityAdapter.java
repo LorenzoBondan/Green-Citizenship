@@ -1,41 +1,47 @@
-package br.ucs.greencitizenship.dtos.like;
+package br.ucs.greencitizenship.dtos.comment;
 
 import br.ucs.greencitizenship.dtos.Convertable;
-import br.ucs.greencitizenship.dtos.comment.CommentDTO;
+import br.ucs.greencitizenship.dtos.like.LikeDTO;
+import br.ucs.greencitizenship.dtos.like.LikeDtoToEntityAdapter;
 import br.ucs.greencitizenship.dtos.post.PostDTO;
 import br.ucs.greencitizenship.dtos.user.UserDtoToEntityAdapter;
 import br.ucs.greencitizenship.entities.Comment;
-import br.ucs.greencitizenship.entities.Like;
 import br.ucs.greencitizenship.entities.Post;
 import br.ucs.greencitizenship.entities.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class LikeDtoToEntityAdapter implements Convertable<Like, LikeDTO> {
+public class CommentDtoToEntityAdapter implements Convertable<Comment, CommentDTO> {
 
     private final UserDtoToEntityAdapter userDtoToEntityAdapter;
+    private final LikeDtoToEntityAdapter likeDtoToEntityAdapter;
 
     @Override
-    public Like toEntity(LikeDTO dto) {
-        return Like.builder()
+    public Comment toEntity(CommentDTO dto) {
+        return Comment.builder()
                 .id(dto.getId())
                 .user(new User(dto.getUser().getId()))
-                .post(Optional.ofNullable(dto.getPost())
-                        .map(post -> new Post(post.getId()))
-                        .orElse(null))
-                .comment(Optional.ofNullable(dto.getComment())
-                        .map(comment -> new Comment(comment.getId()))
-                        .orElse(null))
+                .post(new Post(dto.getPost().getId()))
+                .text(dto.getText())
+                .date(dto.getDate())
                 .build();
     }
 
     @Override
-    public LikeDTO toDto(Like entity) {
-        return LikeDTO.builder()
+    public CommentDTO toDto(Comment entity) {
+
+        List<LikeDTO> likes = Optional.ofNullable(entity.getLikes())
+                .map(list -> list.stream()
+                        .map(likeDtoToEntityAdapter::toDto)
+                        .toList())
+                .orElse(List.of());
+
+        return CommentDTO.builder()
                 .id(entity.getId())
                 .user(Optional.ofNullable(entity.getUser())
                         .map(userDtoToEntityAdapter::toDto)
@@ -43,9 +49,11 @@ public class LikeDtoToEntityAdapter implements Convertable<Like, LikeDTO> {
                 .post(Optional.ofNullable(entity.getPost())
                         .map(post -> new PostDTO(post.getId()))
                         .orElse(null))
-                .comment(Optional.ofNullable(entity.getComment())
-                        .map(comment -> new CommentDTO(comment.getId()))
-                        .orElse(null))
+                .text(entity.getText())
+                .date(entity.getDate())
+
+                .likes(likes)
+
                 .build();
     }
 }

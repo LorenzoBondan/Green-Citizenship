@@ -2,6 +2,8 @@ package br.ucs.greencitizenship.dtos.post;
 
 import br.ucs.greencitizenship.dtos.Convertable;
 import br.ucs.greencitizenship.dtos.category.CategoryDtoToEntityAdapter;
+import br.ucs.greencitizenship.dtos.comment.CommentDTO;
+import br.ucs.greencitizenship.dtos.comment.CommentDtoToEntityAdapter;
 import br.ucs.greencitizenship.dtos.enums.StatusEnumDTO;
 import br.ucs.greencitizenship.dtos.like.LikeDTO;
 import br.ucs.greencitizenship.dtos.like.LikeDtoToEntityAdapter;
@@ -25,6 +27,7 @@ public class PostDtoToEntityAdapter implements Convertable<Post, PostDTO> {
     private final UserDtoToEntityAdapter userDtoToEntityAdapter;
     private final CategoryDtoToEntityAdapter categoryDtoToEntityAdapter;
     private final LikeDtoToEntityAdapter likeDtoToEntityAdapter;
+    private final CommentDtoToEntityAdapter commentDtoToEntityAdapter;
 
     @Override
     public Post toEntity(PostDTO dto) {
@@ -49,6 +52,12 @@ public class PostDtoToEntityAdapter implements Convertable<Post, PostDTO> {
                         .toList())
                 .orElse(List.of());
 
+        List<CommentDTO> comments = Optional.ofNullable(entity.getComments())
+                .map(list -> list.stream()
+                        .map(commentDtoToEntityAdapter::toDto)
+                        .toList())
+                .orElse(List.of());
+
         return PostDTO.builder()
                 .id(entity.getId())
                 .author(Optional.ofNullable(entity.getAuthor())
@@ -66,6 +75,7 @@ public class PostDtoToEntityAdapter implements Convertable<Post, PostDTO> {
                 .isUrgent(Optional.ofNullable(entity.getIsUrgent()).orElse(Boolean.FALSE))
 
                 .likes(likes)
+                .comments(comments)
 
                 .build();
     }

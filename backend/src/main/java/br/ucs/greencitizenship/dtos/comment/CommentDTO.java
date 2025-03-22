@@ -1,9 +1,7 @@
-package br.ucs.greencitizenship.dtos.post;
+package br.ucs.greencitizenship.dtos.comment;
 
-import br.ucs.greencitizenship.dtos.category.CategoryDTO;
-import br.ucs.greencitizenship.dtos.comment.CommentDTO;
-import br.ucs.greencitizenship.dtos.enums.StatusEnumDTO;
 import br.ucs.greencitizenship.dtos.like.LikeDTO;
+import br.ucs.greencitizenship.dtos.post.PostDTO;
 import br.ucs.greencitizenship.dtos.user.UserDTO;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
@@ -20,28 +18,22 @@ import java.util.List;
 @AllArgsConstructor
 @Setter
 @Getter
-public class PostDTO {
+public class CommentDTO {
 
     private Integer id;
     @NotNull
-    private UserDTO author;
+    private UserDTO user;
     @NotNull
-    private CategoryDTO category;
+    private PostDTO post;
     @NotBlank
-    @Size(max = 50)
-    private String title;
-    @NotBlank
-    @Size(max = 500)
-    private String description;
+    @Size(max = 300)
+    private String text;
     @FutureOrPresent
     private LocalDateTime date = LocalDateTime.now();
-    private StatusEnumDTO status;
-    private Boolean isUrgent = Boolean.FALSE;
 
     private List<LikeDTO> likes = new ArrayList<>();
-    private List<CommentDTO> comments = new ArrayList<>();
 
-    public PostDTO(Integer id) {
+    public CommentDTO(Integer id) {
         this.id = id;
     }
 }
