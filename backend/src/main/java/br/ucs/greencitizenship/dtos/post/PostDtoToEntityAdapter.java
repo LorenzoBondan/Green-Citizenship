@@ -3,6 +3,8 @@ package br.ucs.greencitizenship.dtos.post;
 import br.ucs.greencitizenship.dtos.Convertable;
 import br.ucs.greencitizenship.dtos.category.CategoryDtoToEntityAdapter;
 import br.ucs.greencitizenship.dtos.enums.StatusEnumDTO;
+import br.ucs.greencitizenship.dtos.like.LikeDTO;
+import br.ucs.greencitizenship.dtos.like.LikeDtoToEntityAdapter;
 import br.ucs.greencitizenship.dtos.user.UserDTO;
 import br.ucs.greencitizenship.dtos.user.UserDtoToEntityAdapter;
 import br.ucs.greencitizenship.entities.Category;
@@ -13,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -21,6 +24,7 @@ public class PostDtoToEntityAdapter implements Convertable<Post, PostDTO> {
 
     private final UserDtoToEntityAdapter userDtoToEntityAdapter;
     private final CategoryDtoToEntityAdapter categoryDtoToEntityAdapter;
+    private final LikeDtoToEntityAdapter likeDtoToEntityAdapter;
 
     @Override
     public Post toEntity(PostDTO dto) {
@@ -38,6 +42,13 @@ public class PostDtoToEntityAdapter implements Convertable<Post, PostDTO> {
 
     @Override
     public PostDTO toDto(Post entity) {
+
+        List<LikeDTO> likes = Optional.ofNullable(entity.getLikes())
+                .map(list -> list.stream()
+                        .map(likeDtoToEntityAdapter::toDto)
+                        .toList())
+                .orElse(List.of());
+
         return PostDTO.builder()
                 .id(entity.getId())
                 .author(Optional.ofNullable(entity.getAuthor())
@@ -53,6 +64,9 @@ public class PostDtoToEntityAdapter implements Convertable<Post, PostDTO> {
                         .map(statusEnum -> StatusEnumDTO.valueOf(statusEnum.name()))
                         .orElse(null))
                 .isUrgent(Optional.ofNullable(entity.getIsUrgent()).orElse(Boolean.FALSE))
+
+                .likes(likes)
+
                 .build();
     }
 }

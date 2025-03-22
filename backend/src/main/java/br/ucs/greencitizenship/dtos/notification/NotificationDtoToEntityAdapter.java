@@ -27,7 +27,9 @@ public class NotificationDtoToEntityAdapter implements Convertable<Notification,
     public NotificationDTO toDto(Notification entity) {
         return NotificationDTO.builder()
                 .id(entity.getId())
-                .user(new UserDTO(entity.getUser().getId()))
+                .user(Optional.ofNullable(entity.getUser())
+                        .map(user -> new UserDTO(user.getId()))
+                        .orElse(null))
                 .text(entity.getText())
                 .date(Optional.ofNullable(entity.getDate()).orElse(LocalDateTime.now()))
                 .isRead(Optional.ofNullable(entity.getIsRead()).orElse(Boolean.FALSE))

@@ -2,6 +2,7 @@ package br.ucs.greencitizenship.dtos.post;
 
 import br.ucs.greencitizenship.dtos.category.CategoryDTO;
 import br.ucs.greencitizenship.dtos.enums.StatusEnumDTO;
+import br.ucs.greencitizenship.dtos.like.LikeDTO;
 import br.ucs.greencitizenship.dtos.user.UserDTO;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
@@ -10,6 +11,8 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @NoArgsConstructor
@@ -33,6 +36,8 @@ public class PostDTO {
     private LocalDateTime date = LocalDateTime.now();
     private StatusEnumDTO status;
     private Boolean isUrgent = Boolean.FALSE;
+
+    private List<LikeDTO> likes = new ArrayList<>();
 
     public PostDTO(Integer id) {
         this.id = id;

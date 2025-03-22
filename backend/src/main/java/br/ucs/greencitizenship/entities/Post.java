@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @Getter
@@ -35,6 +37,9 @@ public class Post {
     @Convert(converter = StatusEnumConverter.class)
     private StatusEnum status;
     private Boolean isUrgent;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<Like> likes = new ArrayList<>();
 
     public Post(Integer id) {
         this.id = id;
