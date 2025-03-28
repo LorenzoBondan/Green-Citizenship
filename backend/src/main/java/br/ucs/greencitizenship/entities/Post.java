@@ -38,6 +38,9 @@ public class Post {
     private StatusEnum status;
     private Boolean isUrgent;
 
+    @OneToOne(mappedBy = "post", cascade = CascadeType.REMOVE)
+    private PostAttachment postAttachment;
+
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Like> likes = new ArrayList<>();
 

@@ -69,7 +69,7 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Not found")
     })
     @Transactional
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ANALYST', 'ROLE_OPERATOR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CITIZEN')")
     @GetMapping(value = "/email/{email}")
     public ResponseEntity<?> findByEmail(@PathVariable("email") String email){
         return ResponseEntity.ok(service.findByEmail(email));

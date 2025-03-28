@@ -1,7 +1,7 @@
 package br.ucs.greencitizenship.controllers;
 
-import br.ucs.greencitizenship.dtos.userattachment.UserAttachmentDTO;
-import br.ucs.greencitizenship.services.UserAttachmentService;
+import br.ucs.greencitizenship.dtos.postattachment.PostAttachmentDTO;
+import br.ucs.greencitizenship.services.PostAttachmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -15,18 +15,18 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "User Attachment")
+@Tag(name = "Post Attachment")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/userattachment")
-public class UserAttachmentController {
+@RequestMapping("/api/postattachment")
+public class PostAttachmentController {
 
-    private final UserAttachmentService service;
+    private final PostAttachmentService service;
 
     /**
-     * @param id represents the ID of the UserAttachment to be searched
+     * @param id represents the ID of the PostAttachment to be searched
      */
-    @Operation(summary = "Search a UserAttachment by id", method = "GET", description = "Search for an object by id, regardless of its status")
+    @Operation(summary = "Search a PostAttachment by id", method = "GET", description = "Search for an object by id, regardless of its status")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Ok"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
@@ -40,9 +40,9 @@ public class UserAttachmentController {
     }
 
     /**
-     * @param dto represents the UserAttachment object to be created
+     * @param dto represents the PostAttachment object to be created
      */
-    @Operation(summary = "Insert a new UserAttachment", method = "POST")
+    @Operation(summary = "Insert a new PostAttachment", method = "POST")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created"),
             @ApiResponse(responseCode = "400", description = "Bad Request"),
@@ -57,11 +57,11 @@ public class UserAttachmentController {
     public ResponseEntity<?> create(
             @Valid  @RequestBody
             @Schema(
-                    description = "UserAttachment object for creation",
-                    requiredProperties = "user.id, attachment.id",
+                    description = "PostAttachment object for creation",
+                    requiredProperties = "post.id, attachment.id",
                     example = """
                     {
-                        "user": {
+                        "post": {
                             "id": 1
                         },
                         "attachment": {
@@ -70,14 +70,14 @@ public class UserAttachmentController {
                     }
                     """
             )
-            UserAttachmentDTO dto){
+            PostAttachmentDTO dto){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.insert(dto));
     }
 
     /**
-     * @param dto represents the UserAttachment object to be updated
+     * @param dto represents the PostAttachment object to be updated
      */
-    @Operation(summary = "Update a UserAttachment", method = "PUT")
+    @Operation(summary = "Update a PostAttachment", method = "PUT")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Ok"),
             @ApiResponse(responseCode = "400", description = "Bad Request"),
@@ -93,12 +93,12 @@ public class UserAttachmentController {
     public ResponseEntity<?> update(
             @Valid @RequestBody
             @Schema(
-                    description = "UserAttachment object for editing",
-                    requiredProperties = "id, user.id, attachment.id",
+                    description = "PostAttachment object for editing",
+                    requiredProperties = "id, post.id, attachment.id",
                     example = """
                     {
                         "id": 1,
-                        "user": {
+                        "post": {
                             "id": 1
                         },
                         "attachment": {
@@ -107,14 +107,14 @@ public class UserAttachmentController {
                     }
                     """
             )
-            UserAttachmentDTO dto){
+            PostAttachmentDTO dto){
         return ResponseEntity.ok(service.update(dto));
     }
 
     /**
-     * @param id UserAttachment id to be removed
+     * @param id PostAttachment id to be removed
      */
-    @Operation(summary = "Delete a UserAttachment", method = "DELETE", description = "The object is deleted from database")
+    @Operation(summary = "Delete a PostAttachment", method = "DELETE", description = "The object is deleted from database")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "No content"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),

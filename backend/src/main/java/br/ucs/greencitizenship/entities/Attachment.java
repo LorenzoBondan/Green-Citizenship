@@ -29,6 +29,9 @@ public class Attachment {
     @OneToMany(mappedBy = "attachment", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<UserAttachment> userAttachments = new ArrayList<>();
 
+    @OneToMany(mappedBy = "attachment", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<PostAttachment> postAttachments = new ArrayList<>();
+
     public Attachment(Integer id) {
         this.id = id;
     }
