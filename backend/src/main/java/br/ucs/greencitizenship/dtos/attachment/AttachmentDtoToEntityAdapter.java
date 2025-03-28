@@ -1,59 +1,38 @@
-package br.ucs.greencitizenship.dtos.comment;
+package br.ucs.greencitizenship.dtos.attachment;
 
 import br.ucs.greencitizenship.dtos.Convertable;
-import br.ucs.greencitizenship.dtos.like.LikeDTO;
-import br.ucs.greencitizenship.dtos.like.LikeDtoToEntityAdapter;
-import br.ucs.greencitizenship.dtos.post.PostDTO;
-import br.ucs.greencitizenship.dtos.user.UserDtoToEntityAdapter;
-import br.ucs.greencitizenship.entities.Comment;
-import br.ucs.greencitizenship.entities.Post;
-import br.ucs.greencitizenship.entities.User;
+import br.ucs.greencitizenship.dtos.binary.BinaryDtoToEntityAdapter;
+import br.ucs.greencitizenship.entities.Attachment;
+import br.ucs.greencitizenship.entities.Binary;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class CommentDtoToEntityAdapter implements Convertable<Comment, CommentDTO> {
+public class AttachmentDtoToEntityAdapter implements Convertable<Attachment, AttachmentDTO> {
 
-    private final UserDtoToEntityAdapter userDtoToEntityAdapter;
-    private final LikeDtoToEntityAdapter likeDtoToEntityAdapter;
+    private final BinaryDtoToEntityAdapter binaryDtoToEntityAdapter;
 
     @Override
-    public Comment toEntity(CommentDTO dto) {
-        return Comment.builder()
+    public Attachment toEntity(AttachmentDTO dto) {
+        return Attachment.builder()
                 .id(dto.getId())
-                .user(new User(dto.getUser().getId()))
-                .post(new Post(dto.getPost().getId()))
-                .text(dto.getText())
-                .date(dto.getDate())
+                .binary(new Binary(dto.getBinary().getId()))
+                .name(dto.getName())
                 .build();
     }
 
     @Override
-    public CommentDTO toDto(Comment entity) {
+    public AttachmentDTO toDto(Attachment entity) {
 
-        List<LikeDTO> likes = Optional.ofNullable(entity.getLikes())
-                .map(list -> list.stream()
-                        .map(likeDtoToEntityAdapter::toDto)
-                        .toList())
-                .orElse(List.of());
-
-        return CommentDTO.builder()
+        return AttachmentDTO.builder()
                 .id(entity.getId())
-                .user(Optional.ofNullable(entity.getUser())
-                        .map(userDtoToEntityAdapter::toDto)
+                .binary(Optional.ofNullable(entity.getBinary())
+                        .map(binaryDtoToEntityAdapter::toDto)
                         .orElse(null))
-                .post(Optional.ofNullable(entity.getPost())
-                        .map(post -> new PostDTO(post.getId()))
-                        .orElse(null))
-                .text(entity.getText())
-                .date(entity.getDate())
-
-                .likes(likes)
-
+                .name(entity.getName())
                 .build();
     }
 }

@@ -1,9 +1,9 @@
 package br.ucs.greencitizenship.services;
 
-import br.ucs.greencitizenship.dtos.binary.BinaryDTO;
-import br.ucs.greencitizenship.dtos.binary.BinaryDtoToEntityAdapter;
-import br.ucs.greencitizenship.entities.Binary;
-import br.ucs.greencitizenship.repositories.BinaryRepository;
+import br.ucs.greencitizenship.dtos.attachment.AttachmentDTO;
+import br.ucs.greencitizenship.dtos.attachment.AttachmentDtoToEntityAdapter;
+import br.ucs.greencitizenship.entities.Attachment;
+import br.ucs.greencitizenship.repositories.AttachmentRepository;
 import br.ucs.greencitizenship.services.exceptions.DataBaseException;
 import br.ucs.greencitizenship.services.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -12,27 +12,27 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class BinaryService {
+public class AttachmentService {
 
-    private final BinaryRepository repository;
-    private final BinaryDtoToEntityAdapter adapter;
+    private final AttachmentRepository repository;
+    private final AttachmentDtoToEntityAdapter adapter;
 
-    public BinaryDTO findById(Integer id){
-        Binary entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Binary Id not found: " + id));
+    public AttachmentDTO findById(Integer id){
+        Attachment entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Attachment Id not found: " + id));
         return adapter.toDto(entity);
     }
 
-    public BinaryDTO insert(BinaryDTO dto){
-        Binary entity = adapter.toEntity(dto);
+    public AttachmentDTO insert(AttachmentDTO dto){
+        Attachment entity = adapter.toEntity(dto);
         entity = repository.save(entity);
         return adapter.toDto(entity);
     }
 
-    public BinaryDTO update(BinaryDTO dto){
+    public AttachmentDTO update(AttachmentDTO dto){
         if(!repository.existsById(dto.getId())){
             throw new ResourceNotFoundException("Id not found: " + dto.getId());
         }
-        Binary entity = adapter.toEntity(dto);
+        Attachment entity = adapter.toEntity(dto);
         entity = repository.save(entity);
         return adapter.toDto(entity);
     }

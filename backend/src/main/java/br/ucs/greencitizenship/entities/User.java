@@ -25,6 +25,9 @@ public class User implements UserDetails, Serializable {
     private String email;
     private String password;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private UserAttachment userAttachment;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Notification> notifications = new ArrayList<>();
 

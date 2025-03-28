@@ -1,5 +1,6 @@
-package br.ucs.greencitizenship.dtos.binary;
+package br.ucs.greencitizenship.dtos.attachment;
 
+import br.ucs.greencitizenship.dtos.binary.BinaryDTO;
 import lombok.*;
 
 @Builder
@@ -7,8 +8,13 @@ import lombok.*;
 @AllArgsConstructor
 @Setter
 @Getter
-public class BinaryDTO {
+public class AttachmentDTO {
 
     private Integer id;
-    private byte[] bytes;
+    private BinaryDTO binary;
+    private String name;
+
+    public AttachmentDTO(Integer id) {
+        this.id = id;
+    }
 }

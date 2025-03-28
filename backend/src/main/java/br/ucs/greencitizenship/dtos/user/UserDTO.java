@@ -1,6 +1,7 @@
 package br.ucs.greencitizenship.dtos.user;
 
 import br.ucs.greencitizenship.dtos.role.RoleDTO;
+import br.ucs.greencitizenship.dtos.userattachment.UserAttachmentDTO;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -27,6 +28,7 @@ public class UserDTO {
     @NotBlank
     @Size(min = 3, max = 30)
     private String password;
+    private UserAttachmentDTO userAttachment;
 
     private List<RoleDTO> roles = new ArrayList<>();
 
