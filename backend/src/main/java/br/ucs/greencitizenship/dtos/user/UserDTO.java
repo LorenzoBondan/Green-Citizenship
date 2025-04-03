@@ -1,5 +1,6 @@
 package br.ucs.greencitizenship.dtos.user;
 
+import br.ucs.greencitizenship.dtos.notification.NotificationDTO;
 import br.ucs.greencitizenship.dtos.role.RoleDTO;
 import br.ucs.greencitizenship.dtos.userattachment.UserAttachmentDTO;
 import jakarta.validation.constraints.Email;
@@ -31,6 +32,7 @@ public class UserDTO {
     private UserAttachmentDTO userAttachment;
 
     private List<RoleDTO> roles = new ArrayList<>();
+    private List<NotificationDTO> notifications = new ArrayList<>();
 
     public UserDTO(Integer id) {
         this.id = id;

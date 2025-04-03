@@ -7,10 +7,11 @@ import br.ucs.greencitizenship.dtos.comment.CommentDtoToEntityAdapter;
 import br.ucs.greencitizenship.dtos.enums.StatusEnumDTO;
 import br.ucs.greencitizenship.dtos.like.LikeDTO;
 import br.ucs.greencitizenship.dtos.like.LikeDtoToEntityAdapter;
-import br.ucs.greencitizenship.dtos.user.UserDTO;
+import br.ucs.greencitizenship.dtos.postattachment.PostAttachmentDtoToEntityAdapter;
 import br.ucs.greencitizenship.dtos.user.UserDtoToEntityAdapter;
 import br.ucs.greencitizenship.entities.Category;
 import br.ucs.greencitizenship.entities.Post;
+import br.ucs.greencitizenship.entities.PostAttachment;
 import br.ucs.greencitizenship.entities.User;
 import br.ucs.greencitizenship.entities.enums.StatusEnum;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ public class PostDtoToEntityAdapter implements Convertable<Post, PostDTO> {
     private final CategoryDtoToEntityAdapter categoryDtoToEntityAdapter;
     private final LikeDtoToEntityAdapter likeDtoToEntityAdapter;
     private final CommentDtoToEntityAdapter commentDtoToEntityAdapter;
+    private final PostAttachmentDtoToEntityAdapter postAttachmentDtoToEntityAdapter;
 
     @Override
     public Post toEntity(PostDTO dto) {
@@ -40,6 +42,9 @@ public class PostDtoToEntityAdapter implements Convertable<Post, PostDTO> {
                 .date(dto.getDate())
                 .status(StatusEnum.valueOf(dto.getStatus().name()))
                 .isUrgent(dto.getIsUrgent())
+                .postAttachment(Optional.ofNullable(dto.getPostAttachment())
+                        .map(postAttachment -> new PostAttachment(postAttachment.getId()))
+                        .orElse(null))
                 .build();
     }
 
@@ -73,6 +78,9 @@ public class PostDtoToEntityAdapter implements Convertable<Post, PostDTO> {
                         .map(statusEnum -> StatusEnumDTO.valueOf(statusEnum.name()))
                         .orElse(null))
                 .isUrgent(Optional.ofNullable(entity.getIsUrgent()).orElse(Boolean.FALSE))
+                .postAttachment(Optional.ofNullable(entity.getPostAttachment())
+                        .map(postAttachmentDtoToEntityAdapter::toDto)
+                        .orElse(null))
 
                 .likes(likes)
                 .comments(comments)

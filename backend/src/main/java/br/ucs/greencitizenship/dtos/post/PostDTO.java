@@ -4,6 +4,7 @@ import br.ucs.greencitizenship.dtos.category.CategoryDTO;
 import br.ucs.greencitizenship.dtos.comment.CommentDTO;
 import br.ucs.greencitizenship.dtos.enums.StatusEnumDTO;
 import br.ucs.greencitizenship.dtos.like.LikeDTO;
+import br.ucs.greencitizenship.dtos.postattachment.PostAttachmentDTO;
 import br.ucs.greencitizenship.dtos.user.UserDTO;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
@@ -37,6 +38,7 @@ public class PostDTO {
     private LocalDateTime date = LocalDateTime.now();
     private StatusEnumDTO status;
     private Boolean isUrgent = Boolean.FALSE;
+    private PostAttachmentDTO postAttachment;
 
     private List<LikeDTO> likes = new ArrayList<>();
     private List<CommentDTO> comments = new ArrayList<>();
