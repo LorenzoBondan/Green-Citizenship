@@ -102,7 +102,6 @@ public class UserController {
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity")
     })
     @Transactional
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CITIZEN')")
     @PostMapping
     public ResponseEntity<?> create(
             @Valid  @RequestBody

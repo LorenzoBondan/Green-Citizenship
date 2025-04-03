@@ -31,7 +31,6 @@ public class CategoryController {
             @ApiResponse(responseCode = "403", description = "Forbidden")
     })
     @Transactional(readOnly = true)
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CITIZEN')")
     @GetMapping
     public ResponseEntity<?> findAll(Pageable pageable){
         return ResponseEntity.ok(service.findAll(pageable));
@@ -48,7 +47,6 @@ public class CategoryController {
             @ApiResponse(responseCode = "404", description = "Not found")
     })
     @Transactional(readOnly = true)
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CITIZEN')")
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> findById(@PathVariable("id") Integer id){
         return ResponseEntity.ok(service.findById(id));
