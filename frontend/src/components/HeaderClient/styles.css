@@ -1,0 +1,9 @@
+.header-client {
+  background-color: var(--color-btn-primary);
+  color: var(--color-font-tertiary);
+}
+
+.menu-item svg{
+  height: 20px;
+  width: 20px;
+}
