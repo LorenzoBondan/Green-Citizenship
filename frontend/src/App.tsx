@@ -1,35 +1,36 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import { AccessTokenPayloadDTO } from "./models/auth";
+import * as authService from "../src/services/authService";
+import { ContextToken } from "./utils/context-token";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
+import { history } from './utils/history';
+import ClientHome from "./routes/ClientHome";
+import Login from "./routes/ClientHome/Login";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+
+  const [contextTokenPayload, setContextTokenPayload] = useState<AccessTokenPayloadDTO>();
+
+  useEffect(() => {
+
+    if (authService.isAuthenticated()) {
+      const payload = authService.getAccessTokenPayload();
+      setContextTokenPayload(payload);
+    }
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <ContextToken.Provider value={{ contextTokenPayload, setContextTokenPayload }}>
+        <HistoryRouter history={history}>
+          <Routes>
+            <Route path="/" element={<ClientHome /> }>
+              <Route path="login" element={<Login />} />
+            </Route>
+            
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </HistoryRouter>
+    </ContextToken.Provider>
+  );
 }
-
-export default App

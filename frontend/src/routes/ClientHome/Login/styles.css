@@ -1,0 +1,27 @@
+#login-section {
+  padding: 20px 0;
+}
+
+.login-form-container {
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.form-controls-container-login{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  grid-gap: 20px;
+  margin: 20px 0;
+}
+
+.login-form-buttons {
+  width: 100%;
+}
+
+@media (min-width: 576px) {
+  #login-section {
+    padding: 40px 0;
+  }
+}
