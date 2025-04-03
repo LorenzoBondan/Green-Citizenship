@@ -1,9 +1,6 @@
 package br.ucs.greencitizenship.dtos.user;
 
 import br.ucs.greencitizenship.dtos.Convertable;
-import br.ucs.greencitizenship.dtos.like.LikeDTO;
-import br.ucs.greencitizenship.dtos.notification.NotificationDTO;
-import br.ucs.greencitizenship.dtos.notification.NotificationDtoToEntityAdapter;
 import br.ucs.greencitizenship.dtos.role.RoleDTO;
 import br.ucs.greencitizenship.dtos.userattachment.UserAttachmentDtoToEntityAdapter;
 import br.ucs.greencitizenship.entities.Role;
@@ -12,7 +9,6 @@ import br.ucs.greencitizenship.entities.UserAttachment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -21,8 +17,6 @@ public class UserDtoToEntityAdapter implements Convertable<User, UserDTO> {
 
     @Autowired
     private UserAttachmentDtoToEntityAdapter userAttachmentDtoToEntityAdapter;
-    @Autowired
-    private NotificationDtoToEntityAdapter notificationDtoToEntityAdapter;
 
     @Override
     public User toEntity(UserDTO dto) {
@@ -42,13 +36,6 @@ public class UserDtoToEntityAdapter implements Convertable<User, UserDTO> {
 
     @Override
     public UserDTO toDto(User entity) {
-
-        List<NotificationDTO> notifications = Optional.ofNullable(entity.getNotifications())
-                .map(list -> list.stream()
-                        .map(notificationDtoToEntityAdapter::toDto)
-                        .toList())
-                .orElse(List.of());
-
         return UserDTO.builder()
                 .id(entity.getId())
                 .name(entity.getName())
@@ -59,7 +46,6 @@ public class UserDtoToEntityAdapter implements Convertable<User, UserDTO> {
                         .orElse(null))
 
                 .roles(entity.getRoles().stream().map(role -> new RoleDTO(role.getId(), role.getAuthority())).collect(Collectors.toList()))
-                .notifications(notifications)
 
                 .build();
     }
