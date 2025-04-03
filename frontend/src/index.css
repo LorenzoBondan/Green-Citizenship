@@ -209,7 +209,7 @@ nav a {
   cursor: pointer;
 }
 
-.btn-blue {
+.btn-primary {
   border: none;
   background-color: var(--color-btn-primary);
   color: var(--color-btn-inverse);
