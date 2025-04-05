@@ -1,6 +1,7 @@
 import { AxiosRequestConfig } from "axios";
 import { requestBackend } from "../utils/requests";
 import { DPost } from "../models/post";
+import qs from 'qs';
 
 const route = "/api/post";
 
@@ -17,7 +18,8 @@ export function findAll(title?: string, categoryId?: number, statusId?: number[]
             sort,
             page,
             size
-        }
+        },
+        paramsSerializer: params => qs.stringify(params, { arrayFormat: 'repeat' })
     }
 
     return requestBackend(config);

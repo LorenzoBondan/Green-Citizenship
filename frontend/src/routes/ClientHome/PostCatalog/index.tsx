@@ -9,6 +9,7 @@ import * as authService from '../../../services/authService';
 import { MdClear } from "react-icons/md";
 import { DPost } from '../../../models/post';
 import PostCard from '../../../components/PostCard';
+import { DStatusEnum } from '../../../models/enums/statusEnum';
 
 type QueryParams = {
     page: number;
@@ -26,6 +27,7 @@ export default function PostCatalog() {
     });
 
     useEffect(() => {
+        const statusId = [DStatusEnum.IN_PROGRESS.value, DStatusEnum.COMPLETED.value];
 
         const params: any = {
             title: queryParams.title,
@@ -40,6 +42,7 @@ export default function PostCatalog() {
         postService.findAll(
             params.title,
             params.categoryId,
+            statusId,
             params.page,
             undefined,
             params.sort

@@ -16,8 +16,8 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     @Query(nativeQuery = true, value = """
         SELECT * FROM tb_post p WHERE
         UPPER(p.title) LIKE UPPER(CONCAT(:title, '%'))
-        AND :categoryId IS NULL OR :categoryId = p.category_id
         AND p.status IN :statusId
+        AND :categoryId IS NULL OR :categoryId = p.category_id
     """)
     Page<Post> findByTitleAndCategoryAndStatus(@Param("title") String title,
                                                @Param("categoryId") Integer categoryId,
