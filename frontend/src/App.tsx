@@ -7,6 +7,7 @@ import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import { history } from './utils/history';
 import ClientHome from "./routes/ClientHome";
 import Login from "./routes/ClientHome/Login";
+import PostCatalog from "./routes/ClientHome/PostCatalog";
 
 export default function App() {
 
@@ -25,6 +26,8 @@ export default function App() {
         <HistoryRouter history={history}>
           <Routes>
             <Route path="/" element={<ClientHome /> }>
+              <Route index element={<PostCatalog />} />
+              <Route path="posts" element={<PostCatalog />} />
               <Route path="login" element={<Login />} />
             </Route>
             

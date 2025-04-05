@@ -4,8 +4,8 @@ import { DCategory } from "../models/category";
 
 const route = "/api/category";
 
-export function findAll(page: number, pageSize = 12, sort: string) {
-    sort = sort || "id;desc";
+export function findAll(page: number, size = 12, sort: string) {
+    sort = sort || "id,desc";
     
     const config : AxiosRequestConfig = {
         method: "GET",
@@ -13,7 +13,7 @@ export function findAll(page: number, pageSize = 12, sort: string) {
         params: {
             sort,
             page,
-            pageSize
+            size
         }
     }
 

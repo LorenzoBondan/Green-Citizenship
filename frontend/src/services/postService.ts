@@ -4,8 +4,8 @@ import { DPost } from "../models/post";
 
 const route = "/api/post";
 
-export function findAll(title: string, categoryId: number, page: number, pageSize = 12, sort: string) {
-    sort = sort || "id;desc";
+export function findAll(title?: string, categoryId?: number, page?: number, size = 12, sort?: string) {
+    sort = sort || "id,desc";
     
     const config : AxiosRequestConfig = {
         method: "GET",
@@ -15,7 +15,7 @@ export function findAll(title: string, categoryId: number, page: number, pageSiz
             categoryId,
             sort,
             page,
-            pageSize
+            size
         }
     }
 
