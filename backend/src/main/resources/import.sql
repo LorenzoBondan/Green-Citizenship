@@ -19,9 +19,9 @@ INSERT INTO tb_post (category_id, is_urgent, status, user_id, date, description,
 INSERT INTO tb_post (category_id, is_urgent, status, user_id, date, description, title) VALUES (2, false, 2, 2, TIMESTAMP WITHOUT TIME ZONE '2025-02-01T16:00:00', 'Descrição de crítica sustentável', 'Crítica sustentável');
 INSERT INTO tb_post (category_id, is_urgent, status, user_id, date, description, title) VALUES (3, true, 1, 3, TIMESTAMP WITHOUT TIME ZONE '2025-03-01T17:00:00', 'Descrição de aprovação sustentável', 'Aprovação sustentável');
 
-INSERT INTO tb_comment (post_id, user_id, date, text) VALUES (1, 2, NOW(), 'Great insights!');
-INSERT INTO tb_comment (post_id, user_id, date, text) VALUES (2, 3, NOW(), 'Very informative!');
-INSERT INTO tb_comment (post_id, user_id, date, text) VALUES (3, 1, NOW(), 'I totally agree!');
+INSERT INTO tb_comment (post_id, user_id, date, text) VALUES (1, 2, TIMESTAMP WITHOUT TIME ZONE '2025-01-01T15:00:00', 'Great insights!');
+INSERT INTO tb_comment (post_id, user_id, date, text) VALUES (2, 3, TIMESTAMP WITHOUT TIME ZONE '2025-01-01T15:00:00', 'Very informative!');
+INSERT INTO tb_comment (post_id, user_id, date, text) VALUES (3, 1, TIMESTAMP WITHOUT TIME ZONE '2025-01-01T15:00:00', 'I totally agree!');
 
 INSERT INTO tb_like (comment_id, post_id, user_id) VALUES (null, 1, 3);
 INSERT INTO tb_like (comment_id, post_id, user_id) VALUES (null, 2, 1);
@@ -31,6 +31,6 @@ INSERT INTO tb_like (comment_id, post_id, user_id) VALUES (1, null, 3);
 INSERT INTO tb_like (comment_id, post_id, user_id) VALUES (2, null, 1);
 INSERT INTO tb_like (comment_id, post_id, user_id) VALUES (3, null, 2);
 
-INSERT INTO tb_notification (is_read, user_id, date, text) VALUES (false, 1, NOW(), 'Notification test 1');
-INSERT INTO tb_notification (is_read, user_id, date, text) VALUES (true, 2, NOW(), 'Notification test 2');
-INSERT INTO tb_notification (is_read, user_id, date, text) VALUES (false, 3, NOW(), 'Notification test 3');
+INSERT INTO tb_notification (is_read, user_id, date, text) VALUES (false, 1, TIMESTAMP WITHOUT TIME ZONE '2025-01-01T15:00:00', 'Notification test 1');
+INSERT INTO tb_notification (is_read, user_id, date, text) VALUES (true, 2, TIMESTAMP WITHOUT TIME ZONE '2025-01-01T15:00:00', 'Notification test 2');
+INSERT INTO tb_notification (is_read, user_id, date, text) VALUES (false, 3, TIMESTAMP WITHOUT TIME ZONE '2025-01-01T15:00:00', 'Notification test 3');

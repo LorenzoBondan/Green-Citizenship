@@ -20,8 +20,8 @@ public class PostService {
     private final PostDtoToEntityAdapter adapter;
     private final AuthService authService;
 
-    public Page<PostDTO> findAllByTitleAndCategory(String title, Integer categoryId, Pageable pageable){
-        Page<Post> list = repository.findByTitleAndCategory(title, categoryId, pageable);
+    public Page<PostDTO> findAllByTitleAndCategoryAndStatus(String title, Integer categoryId, Integer statusId, Pageable pageable){
+        Page<Post> list = repository.findByTitleAndCategoryAndStatus(title, categoryId, statusId, pageable);
         return list.map(adapter::toDto);
     }
 

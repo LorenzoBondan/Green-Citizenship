@@ -32,11 +32,12 @@ public class PostController {
     })
     @Transactional(readOnly = true)
     @GetMapping
-    public ResponseEntity<?> findAllByTitleAndCategory(
+    public ResponseEntity<?> findAllByTitleAndCategoryAndStatus(
             @RequestParam(value = "title", required = false, defaultValue = "") String title,
             @RequestParam(value = "categoryId", required = false) Integer categoryId,
+            @RequestParam(value = "statusId") Integer statusId,
             Pageable pageable){
-        return ResponseEntity.ok(service.findAllByTitleAndCategory(title, categoryId, pageable));
+        return ResponseEntity.ok(service.findAllByTitleAndCategoryAndStatus(title, categoryId, statusId, pageable));
     }
 
     /**
