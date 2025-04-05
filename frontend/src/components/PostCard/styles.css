@@ -1,0 +1,115 @@
+.post-card {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin-bottom: 15px;
+}
+
+.post-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    cursor: pointer;
+    transform: scale(1.01);
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.urgent-icon {
+    color: red;
+    font-size: 1.2rem;
+}
+
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.status-aprovado {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-pendente {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-rejeitado {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.post-description {
+    margin: 12px 0;
+    color: #444;
+}
+
+.post-footer, .post-middle-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    font-size: 0.875rem;
+    color: #666;
+    gap: 10px;
+}
+
+.post-middle-container {
+    margin-bottom: 10px;
+}
+
+.post-interactions {
+    display: flex;
+    gap: 10px;
+}
+
+.icon {
+    margin-right: 4px;
+}
+
+.status-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.status-icon {
+    font-size: 1rem;
+}
+
+.status-in_revision {
+    background-color: #fcefc7;
+    color: #b08900;
+}
+
+.status-in_progress {
+    background-color: #e0f7fa;
+    color: #007c91;
+}
+
+.status-completed {
+    background-color: #e6f4ea;
+    color: #2e7d32;
+}
+
+.status-canceled {
+    background-color: #fbe9e7;
+    color: #c62828;
+}
+

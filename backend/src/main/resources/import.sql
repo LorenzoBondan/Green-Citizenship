@@ -15,9 +15,9 @@ INSERT INTO tb_category (name) VALUES ('Crítica');
 INSERT INTO tb_category (name) VALUES ('Aprovação');
 INSERT INTO tb_category (name) VALUES ('Outro');
 
-INSERT INTO tb_post (category_id, is_urgent, status, user_id, date, description, title) VALUES (1, true, 1, 1, NOW(), 'Descrição de sugestão sustentável', 'Sugestão sustentável');
-INSERT INTO tb_post (category_id, is_urgent, status, user_id, date, description, title) VALUES (2, false, 2, 2, NOW(), 'Descrição de crítica sustentável', 'Crítica sustentável');
-INSERT INTO tb_post (category_id, is_urgent, status, user_id, date, description, title) VALUES (3, true, 1, 3, NOW(), 'Descrição de aprovação sustentável', 'Aprovação sustentável');
+INSERT INTO tb_post (category_id, is_urgent, status, user_id, date, description, title) VALUES (1, true, 1, 1, TIMESTAMP WITHOUT TIME ZONE '2025-01-01T15:00:00', 'Descrição de sugestão sustentável', 'Sugestão sustentável');
+INSERT INTO tb_post (category_id, is_urgent, status, user_id, date, description, title) VALUES (2, false, 2, 2, TIMESTAMP WITHOUT TIME ZONE '2025-02-01T16:00:00', 'Descrição de crítica sustentável', 'Crítica sustentável');
+INSERT INTO tb_post (category_id, is_urgent, status, user_id, date, description, title) VALUES (3, true, 1, 3, TIMESTAMP WITHOUT TIME ZONE '2025-03-01T17:00:00', 'Descrição de aprovação sustentável', 'Aprovação sustentável');
 
 INSERT INTO tb_comment (post_id, user_id, date, text) VALUES (1, 2, NOW(), 'Great insights!');
 INSERT INTO tb_comment (post_id, user_id, date, text) VALUES (2, 3, NOW(), 'Very informative!');

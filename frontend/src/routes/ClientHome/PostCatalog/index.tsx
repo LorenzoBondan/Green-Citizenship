@@ -8,6 +8,7 @@ import * as userService from '../../../services/userService';
 import * as authService from '../../../services/authService';
 import { MdClear } from "react-icons/md";
 import { DPost } from '../../../models/post';
+import PostCard from '../../../components/PostCard';
 
 type QueryParams = {
     page: number;
@@ -104,7 +105,7 @@ export default function PostCatalog() {
 
                 <div className="catalog-grid mb20 mt20">
                     {posts.map(post => (
-                        <p>{post.title}</p>
+                        <PostCard post={post} key={post.id} />
                     ))}
                 </div>
 
