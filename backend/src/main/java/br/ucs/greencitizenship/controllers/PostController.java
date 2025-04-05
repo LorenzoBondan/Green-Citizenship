@@ -16,6 +16,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Tag(name = "Post")
 @RequiredArgsConstructor
 @RestController
@@ -35,7 +37,7 @@ public class PostController {
     public ResponseEntity<?> findAllByTitleAndCategoryAndStatus(
             @RequestParam(value = "title", required = false, defaultValue = "") String title,
             @RequestParam(value = "categoryId", required = false) Integer categoryId,
-            @RequestParam(value = "statusId") Integer statusId,
+            @RequestParam(value = "statusId") List<Integer> statusId,
             Pageable pageable){
         return ResponseEntity.ok(service.findAllByTitleAndCategoryAndStatus(title, categoryId, statusId, pageable));
     }

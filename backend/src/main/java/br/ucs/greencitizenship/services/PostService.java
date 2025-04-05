@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PostService {
@@ -20,7 +22,7 @@ public class PostService {
     private final PostDtoToEntityAdapter adapter;
     private final AuthService authService;
 
-    public Page<PostDTO> findAllByTitleAndCategoryAndStatus(String title, Integer categoryId, Integer statusId, Pageable pageable){
+    public Page<PostDTO> findAllByTitleAndCategoryAndStatus(String title, Integer categoryId, List<Integer> statusId, Pageable pageable){
         Page<Post> list = repository.findByTitleAndCategoryAndStatus(title, categoryId, statusId, pageable);
         return list.map(adapter::toDto);
     }

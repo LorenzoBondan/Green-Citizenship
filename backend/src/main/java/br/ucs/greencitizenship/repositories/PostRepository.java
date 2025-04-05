@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
 
@@ -15,10 +17,10 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
         SELECT * FROM tb_post p WHERE
         UPPER(p.title) LIKE UPPER(CONCAT(:title, '%'))
         AND :categoryId IS NULL OR :categoryId = p.category_id
-        AND p.status = :statusId
+        AND p.status IN :statusId
     """)
     Page<Post> findByTitleAndCategoryAndStatus(@Param("title") String title,
                                                @Param("categoryId") Integer categoryId,
-                                               @Param("statusId") Integer statusId,
+                                               @Param("statusId") List<Integer> statusId,
                                                Pageable pageable);
 }
