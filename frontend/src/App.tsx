@@ -8,6 +8,7 @@ import { history } from './utils/history';
 import ClientHome from "./routes/ClientHome";
 import Login from "./routes/ClientHome/Login";
 import PostCatalog from "./routes/ClientHome/PostCatalog";
+import PostDetails from "./routes/ClientHome/PostDetails";
 
 export default function App() {
 
@@ -28,6 +29,7 @@ export default function App() {
             <Route path="/" element={<ClientHome /> }>
               <Route index element={<PostCatalog />} />
               <Route path="posts" element={<PostCatalog />} />
+              <Route path="posts/:postId" element={<PostDetails />} />
               <Route path="login" element={<Login />} />
             </Route>
             

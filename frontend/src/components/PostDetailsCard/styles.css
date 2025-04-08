@@ -1,0 +1,27 @@
+.post-details-top{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.post-details-body {
+    padding: 10px;
+}
+
+.post-details-body p {
+    margin: 8px 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.post-details-top h2 {
+    font-size: 20px;
+    margin-bottom: 4px;
+}
+
+.post-details-top h4 {
+    font-size: 16px;
+    color: #555;
+}
