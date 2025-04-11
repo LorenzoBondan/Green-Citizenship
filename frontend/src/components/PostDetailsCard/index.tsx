@@ -27,9 +27,20 @@ export default function PostDetailsCard({post}: Props) {
                 </span>
             </div>
             <div className="post-details-body">
-                <p><strong>Description:</strong> {post.description}</p>
-                <p><strong>Date:</strong> {formatLocalDateTime(post.date.toString())}</p>
+                <p>{post.description}</p>
+                <p><strong>Data de publicação:</strong> {formatLocalDateTime(post.date.toString())}</p>
+                <div className="post-footer">
+                    <div className="post-interactions">
+                        <span>
+                            <strong>{post.likes.length}</strong> {post.likes.length === 1 ? ' curtida' : ' curtidas'}
+                        </span>
+                        <span>
+                            <strong>{post.comments.length}</strong> {post.comments.length === 1 ? ' comentário' : ' comentários'}
+                        </span>
+                    </div>
+                </div>
             </div>
+            
         </div>
     );
 }

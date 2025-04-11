@@ -18,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @Setter
 @Getter
+@EqualsAndHashCode
 public class CommentDTO {
 
     private Integer id;

@@ -1,0 +1,33 @@
+#comment-form-section {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .comment-form-container {
+    width: 100%;
+  }
+  
+  label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+  
+  .form-control.textarea {
+    width: 100%;
+    min-height: 100px;
+    resize: vertical;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.2s ease;
+  }
+  
+  .comment-form-buttons {
+    width: 100%;
+  }
