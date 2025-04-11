@@ -1,0 +1,77 @@
+.comment-card {
+    padding: 16px;
+    margin-bottom: 16px;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .comment-card-top-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .comment-user-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 12px;
+  }
+  
+  .comment-user-info {
+    flex-grow: 1;
+  }
+  
+  .comment-user-info h5 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  
+  .comment-user-info p {
+    margin: 2px 0 0 0;
+    font-size: 12px;
+    color: #888;
+  }
+  
+  .comment-card-content {
+    margin-top: 12px;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .comment-actions {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .edit-btn,
+  .delete-btn {
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  .edit-btn {
+    background-color: #f0f0f0;
+    color: #333;
+  }
+  
+  .delete-btn {
+    background-color: #f87171;
+    color: white;
+  }
+  
+  .edit-btn:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .delete-btn:hover {
+    background-color: #dc2626;
+  }
+  

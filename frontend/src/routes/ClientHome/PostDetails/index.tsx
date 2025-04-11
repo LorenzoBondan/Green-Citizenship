@@ -3,10 +3,15 @@ import './styles.css';
 import { useCallback, useEffect, useState } from 'react';
 import { DPost } from '../../../models/post';
 import * as postService from '../../../services/postService';
+import * as userService from '../../../services/userService';
+import * as authService from '../../../services/authService';
 import { Link } from 'react-router-dom';
 import ButtonInverse from '../../../components/ButtonInverse';
 import PostDetailsCard from '../../../components/PostDetailsCard';
 import CommentForm from '../../../components/CommentForm';
+import { isAuthenticated } from '../../../services/authService';
+import CommentCard from '../../../components/CommentCard';
+import { DUser } from '../../../models/user';
 
 export default function PostDetails() {
 
@@ -15,6 +20,7 @@ export default function PostDetails() {
     const navigate = useNavigate();
   
     const [post, setPost] = useState<DPost>();
+    const [user, setUser] = useState<DUser>();
 
     useEffect(() => {
       findPostById();
@@ -34,15 +40,37 @@ export default function PostDetails() {
       } else {
         navigate("/");
       }
-    }, [params.postId, navigate]);    
+    }, [params.postId, navigate]);
+    
+    useEffect(() => {
+      if(authService.isAuthenticated()){
+        userService.findMe()
+        .then(response => {
+          setUser(response.data);
+        })
+        .catch(() => {
+        });
+      }
+    }, []);
 
     return(
       <main>
         <section id="post-details-section" className="container">
           {post && <PostDetailsCard post={post}/> }
-          <section>
-            {post && <CommentForm post={post} onButtonClick={findPostById} />}
-          </section>
+
+          <div className="catalog-grid mb20 mt20">
+            {post?.comments.map(comment => (
+              <CommentCard key={comment.id} comment={comment} user={user} onEdit={findPostById} onDelete={findPostById} />
+            ))}
+          </div>
+
+          {isAuthenticated() ? 
+            <section>
+              {post && <CommentForm post={post} onButtonClick={findPostById} />}
+            </section>
+            : 
+            <Link to="/login"><p style={{marginBottom:"20px", color:"blue"}}>Faça login para comentar</p></Link>
+          }
           <div className="btn-page-container">
             <Link to="/">
               <ButtonInverse text="Home" />
