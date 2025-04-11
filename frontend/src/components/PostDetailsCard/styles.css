@@ -25,3 +25,9 @@
     font-size: 16px;
     color: #555;
 }
+
+.post-details-card-admin-section {
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid var(--color-card-border);
+}

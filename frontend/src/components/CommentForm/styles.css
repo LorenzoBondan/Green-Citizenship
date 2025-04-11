@@ -8,6 +8,10 @@
   .comment-form-container {
     width: 100%;
   }
+
+  .comment-form-card {
+    padding: 20px;
+  }
   
   label {
     display: block;

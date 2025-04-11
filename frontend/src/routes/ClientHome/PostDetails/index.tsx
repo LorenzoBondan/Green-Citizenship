@@ -6,7 +6,6 @@ import * as postService from '../../../services/postService';
 import * as userService from '../../../services/userService';
 import * as authService from '../../../services/authService';
 import { Link } from 'react-router-dom';
-import ButtonInverse from '../../../components/ButtonInverse';
 import PostDetailsCard from '../../../components/PostDetailsCard';
 import CommentForm from '../../../components/CommentForm';
 import { isAuthenticated } from '../../../services/authService';
@@ -56,9 +55,9 @@ export default function PostDetails() {
     return(
       <main>
         <section id="post-details-section" className="container">
-          {post && <PostDetailsCard post={post}/> }
+          {post && <PostDetailsCard post={post} isEditable={false} onEdit={findPostById} /> }
 
-          <div className="catalog-grid mb20 mt20">
+          <div className="comments-grid mb20 mt20">
             {post?.comments.map(comment => (
               <CommentCard key={comment.id} comment={comment} user={user} onEdit={findPostById} onDelete={findPostById} />
             ))}
@@ -71,11 +70,6 @@ export default function PostDetails() {
             : 
             <Link to="/login"><p style={{marginBottom:"20px", color:"blue"}}>Faça login para comentar</p></Link>
           }
-          <div className="btn-page-container">
-            <Link to="/">
-              <ButtonInverse text="Home" />
-            </Link>
-          </div>
         </section>
       </main>
     );

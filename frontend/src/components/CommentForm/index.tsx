@@ -90,7 +90,7 @@ export default function CommentForm({post, onButtonClick} : Props) {
     return(
             <section id="comment-form-section">
                 <div className="comment-form-container">
-                    <form className="card form" onSubmit={handleSubmit}>
+                    <form className="card comment-form-card" onSubmit={handleSubmit}>
                         <div className="form-controls-container">
                             <div>
                                 <label htmlFor="">Comentário</label>

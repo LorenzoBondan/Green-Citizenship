@@ -17,7 +17,7 @@ export default function LoggedUser() {
             ? (
                 <div className="logged-user">
                     <p>{contextTokenPayload.user_name}</p>
-                    <span onClick={handleLogoutClick}>Exit</span>
+                    <span onClick={handleLogoutClick}>Sair</span>
                 </div>
             )
             : (
