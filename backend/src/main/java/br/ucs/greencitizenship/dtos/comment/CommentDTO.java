@@ -3,7 +3,6 @@ package br.ucs.greencitizenship.dtos.comment;
 import br.ucs.greencitizenship.dtos.like.LikeDTO;
 import br.ucs.greencitizenship.dtos.post.PostDTO;
 import br.ucs.greencitizenship.dtos.user.UserDTO;
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -29,7 +28,6 @@ public class CommentDTO {
     @NotBlank
     @Size(max = 300)
     private String text;
-    @FutureOrPresent
     private LocalDateTime date = LocalDateTime.now();
 
     private List<LikeDTO> likes = new ArrayList<>();
