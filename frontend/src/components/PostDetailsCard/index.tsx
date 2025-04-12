@@ -36,12 +36,12 @@ export default function PostDetailsCard({post, isEditable, onEdit}: Props) {
         if (!option || option.value === selectedStatus) return;
 
         setIsLoading(true);
-        /*postService.updateStatus(post.id, option.value)
+        postService.updateStatus(post.id, option.value)
             .then(() => {
                 setSelectedStatus(option.value);
                 onEdit();
             })
-            .finally(() => setIsLoading(false));*/
+            .finally(() => setIsLoading(false));
     };
 
     const statusOptions = Object.values(DStatusEnum).map((item) => ({

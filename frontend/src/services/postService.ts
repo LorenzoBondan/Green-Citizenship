@@ -53,6 +53,19 @@ export function update(obj: DPost) {
     return requestBackend(config);
 }
 
+export function updateStatus(id: number, status: string) {
+    const config: AxiosRequestConfig = {
+        method: "PATCH",
+        url: `${route}/${id}`,
+        withCredentials: true,
+        params: {
+            status
+        }
+    }
+
+    return requestBackend(config);
+}
+
 export function deleteById(id: number) {
     const config : AxiosRequestConfig = {
         method: "DELETE",
