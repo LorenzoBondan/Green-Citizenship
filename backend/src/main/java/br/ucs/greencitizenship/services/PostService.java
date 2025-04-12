@@ -1,11 +1,13 @@
 package br.ucs.greencitizenship.services;
 
+import br.ucs.greencitizenship.dtos.enums.StatusEnumDTO;
 import br.ucs.greencitizenship.dtos.post.PostDTO;
 import br.ucs.greencitizenship.dtos.post.PostDtoToEntityAdapter;
 import br.ucs.greencitizenship.entities.Post;
 import br.ucs.greencitizenship.repositories.PostRepository;
 import br.ucs.greencitizenship.services.exceptions.DataBaseException;
 import br.ucs.greencitizenship.services.exceptions.ResourceNotFoundException;
+import jakarta.xml.bind.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -46,6 +48,18 @@ public class PostService {
         Post entity = adapter.toEntity(dto);
         entity = repository.save(entity);
         return adapter.toDto(entity);
+    }
+
+    public void updateStatus(Integer id, String status) throws ValidationException {
+        StatusEnumDTO statusEnum;
+        try {
+            statusEnum = StatusEnumDTO.valueOf(status);
+        } catch (IllegalArgumentException e) {
+            throw new ValidationException("Status inválido: " + status);
+        }
+        PostDTO post = findById(id);
+        post.setStatus(statusEnum);
+        repository.save(adapter.toEntity(post));
     }
 
     public void delete(Integer id){

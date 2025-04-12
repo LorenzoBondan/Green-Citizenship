@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.xml.bind.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -138,6 +139,25 @@ public class PostController {
             )
             PostDTO dto){
         return ResponseEntity.ok(service.update(dto));
+    }
+
+    /**
+     * @param id Post id to be updated
+     * @param status Status to be changed to
+     */
+    @Operation(summary = "Update a Post Status", method = "PATCH", description = "Update the Post status")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Ok"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+            @ApiResponse(responseCode = "409", description = "Integrity violation")
+    })
+    @Transactional
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PatchMapping(value = "/{id}")
+    public ResponseEntity<?> updateStatus(@PathVariable("id") Integer id, @RequestParam(value = "status") String status) throws ValidationException {
+        service.updateStatus(id, status);
+        return ResponseEntity.ok().build();
     }
 
     /**
