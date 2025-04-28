@@ -11,12 +11,16 @@ import {
     MdCancel,
     MdErrorOutline
 } from "react-icons/md";
+import { DUser } from "../../models/user";
 
 type Props = {
     post: DPost;
+    user: DUser;
 }
 
-export default function PostCard({post} : Props) {
+export default function PostCard({post, user} : Props) {
+
+    const isOwner = user?.id === post.author.id;
 
     const statusIcons: Record<string, JSX.Element> = {
         IN_REVISION: <MdOutlineHistory className="status-icon in-revision" title="In Revision" />,
@@ -56,6 +60,13 @@ export default function PostCard({post} : Props) {
                         <span><FaHeart className="icon" style={{color:"red"}} /> {post.likes.length}</span>
                         <span><FaComment className="icon" style={{color:"grey"}}/> {post.comments.length}</span>
                     </div>
+                    {isOwner && 
+                        <div className="btn btn-primary">
+                            <Link to={`/postform/${post.id}`}>
+                                Editar
+                            </Link>
+                        </div>
+                    }
                 </div>
             </div>
         </Link>

@@ -114,8 +114,8 @@ export default function PostCatalog() {
                 </div>
 
                 <div className="catalog-grid mb20 mt20">
-                    {posts.map(post => (
-                        <PostCard post={post} key={post.id} />
+                    {user && posts.map(post => (
+                        <PostCard post={post} user={user} key={post.id} />
                     ))}
                 </div>
 
