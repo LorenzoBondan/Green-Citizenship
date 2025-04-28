@@ -1,0 +1,35 @@
+#post-form-section {
+    padding: 20px 0;
+  }
+  
+  .post-form-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .post-form-buttons {
+    width: 100%;
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: 1fr;
+  }
+
+  .form-controls-container{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  @media (min-width: 576px) {
+    #post-form-section {
+      padding: 40px 0;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .form-controls-container, .post-form-buttons {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  

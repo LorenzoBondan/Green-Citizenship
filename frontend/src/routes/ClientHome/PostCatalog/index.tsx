@@ -10,6 +10,7 @@ import { MdClear } from "react-icons/md";
 import { DPost } from '../../../models/post';
 import PostCard from '../../../components/PostCard';
 import { DStatusEnum } from '../../../models/enums/statusEnum';
+import { Link } from 'react-router-dom';
 
 type QueryParams = {
     page: number;
@@ -104,6 +105,12 @@ export default function PostCatalog() {
                     <SearchBar onSearch={handleSearch} />
 
                     <MdClear className='clear-filters-btn' onClick={handleClearFilters}/>
+                </div>
+
+                <div className='new-post-container mt20 w100'>
+                    <Link to="/postform/create">
+                        <span className='btn btn-primary' style={{width:"100%"}}>Nova Publicação</span>
+                    </Link>
                 </div>
 
                 <div className="catalog-grid mb20 mt20">

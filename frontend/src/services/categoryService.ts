@@ -4,7 +4,7 @@ import { DCategory } from "../models/category";
 
 const route = "/api/category";
 
-export function findAll(page: number, size = 12, sort: string) {
+export function findAll(page?: number, size = 12, sort?: string) {
     sort = sort || "id,desc";
     
     const config : AxiosRequestConfig = {
