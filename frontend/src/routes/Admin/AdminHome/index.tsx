@@ -23,13 +23,13 @@ export default function AdminHome() {
             </section>
             <section className='container admin-items-section'>
                 <div className='admin-item card'>
-                    <Link to="/admin/posts">
-                        <div className='btn btn-blue'>Publicações pendentes</div>
+                    <Link to="/admin/users">
+                        <div className='btn btn-primary'>Publicações pendentes</div>
                     </Link>
                 </div>
                 <div className='admin-item card'>
                     <Link to="/admin/users">
-                        <div className='btn btn-blue'>Usuários</div>
+                        <div className='btn btn-primary'>Usuários</div>
                     </Link>
                 </div>
             </section>
