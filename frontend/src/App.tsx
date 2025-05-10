@@ -10,6 +10,9 @@ import Login from "./routes/ClientHome/Login";
 import PostCatalog from "./routes/ClientHome/PostCatalog";
 import PostDetails from "./routes/ClientHome/PostDetails";
 import PostForm from "./routes/ClientHome/PostForm";
+import { PrivateRoute } from "./components/PrivateRoute";
+import Admin from "./routes/Admin";
+import AdminHome from "./routes/Admin/AdminHome";
 
 export default function App() {
 
@@ -35,7 +38,12 @@ export default function App() {
               <Route path="postform/:postId" element={<PostForm />} />
               <Route path="login" element={<Login />} />
             </Route>
-            
+            <Route path="/admin/" element={<PrivateRoute roles={['ROLE_ADMIN']}><Admin /></PrivateRoute>}>
+              <Route index element={<Navigate to="/admin/home" />} />
+              <Route path="home" element={<AdminHome />} />
+              <Route path="users" element={<></>} />
+              <Route path="posts" element={<></>} />
+            </Route>
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </HistoryRouter>
