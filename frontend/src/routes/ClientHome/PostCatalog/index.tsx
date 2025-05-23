@@ -16,7 +16,12 @@ type QueryParams = {
     categoryId: number;
 }
 
-export default function PostCatalog() {
+type Props = {
+    isAdminPage: boolean;
+}
+
+export default function PostCatalog({isAdminPage} : Props) {
+
     const { user } = useContext(AuthContext);
     const [isLastPage, setIsLastPage] = useState(false);
     const [posts, setPosts] = useState<DPost[]>([]);
@@ -27,7 +32,9 @@ export default function PostCatalog() {
     });
 
     useEffect(() => {
-        const statusId = [DStatusEnum.IN_PROGRESS.value, DStatusEnum.COMPLETED.value];
+        const statusId = isAdminPage
+            ? [DStatusEnum.IN_REVISION.value]
+            : [DStatusEnum.IN_PROGRESS.value, DStatusEnum.COMPLETED.value];
 
         const params: any = {
             title: queryParams.title,
@@ -96,15 +103,17 @@ export default function PostCatalog() {
                     <MdClear className='clear-filters-btn' onClick={handleClearFilters}/>
                 </div>
 
-                <div className='new-post-container mt20 w100'>
-                    <Link to="/postform/create">
-                        <span className='btn btn-primary' style={{width:"100%"}}>Nova Publicação</span>
-                    </Link>
-                </div>
+                {!isAdminPage && (
+                    <div className='new-post-container mt20 w100'>
+                        <Link to="/postform/create">
+                            <span className='btn btn-primary' style={{ width: "100%" }}>Nova Publicação</span>
+                        </Link>
+                    </div>
+                )}
 
                 <div className="catalog-grid mb20 mt20">
                     {user && posts.map(post => (
-                        <PostCard post={post} user={user} key={post.id} />
+                        <PostCard post={post} user={user} isAdminPage={isAdminPage} key={post.id} />
                     ))}
                 </div>
 

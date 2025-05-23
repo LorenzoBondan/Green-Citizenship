@@ -33,8 +33,8 @@ export default function App() {
         <HistoryRouter history={history}>
           <Routes>
             <Route path="/" element={<ClientHome /> }>
-              <Route index element={<PostCatalog />} />
-              <Route path="posts" element={<PostCatalog />} />
+              <Route index element={<PostCatalog isAdminPage={false} />} />
+              <Route path="posts" element={<PostCatalog isAdminPage={false} />} />
               <Route path="posts/:postId" element={<PostDetails />} />
               <Route path="postform/create" element={<PostForm />} />
               <Route path="postform/:postId" element={<PostForm />} />
@@ -44,7 +44,7 @@ export default function App() {
               <Route index element={<Navigate to="/admin/home" />} />
               <Route path="home" element={<AdminHome />} />
               <Route path="users" element={<></>} />
-              <Route path="posts" element={<></>} />
+              <Route path="posts" element={<PostCatalog isAdminPage={true} />} />
             </Route>
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>

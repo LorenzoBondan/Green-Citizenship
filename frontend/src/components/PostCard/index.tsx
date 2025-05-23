@@ -16,9 +16,10 @@ import { DUser } from "../../models/user";
 type Props = {
     post: DPost;
     user: DUser;
+    isAdminPage: boolean;
 }
 
-export default function PostCard({post, user} : Props) {
+export default function PostCard({post, user, isAdminPage} : Props) {
 
     const isOwner = user?.id === post.author.id;
 
@@ -54,20 +55,31 @@ export default function PostCard({post, user} : Props) {
                     <span className="post-category">{post.category.name}</span>
                 </div>
 
+                
                 <div className="post-footer">
-                    <span className="post-date">{formatLocalDateTime(post.date.toString())}</span>
-                    <div className="post-interactions">
-                        <span><FaHeart className="icon" style={{color:"red"}} /> {post.likes.length}</span>
-                        <span><FaComment className="icon" style={{color:"grey"}}/> {post.comments.length}</span>
-                    </div>
-                    {isOwner && 
-                        <div className="btn btn-primary">
-                            <Link to={`/postform/${post.id}`}>
-                                Editar
-                            </Link>
+                    {!isAdminPage ? <>
+                        <span className="post-date">{formatLocalDateTime(post.date.toString())}</span>
+                        <div className="post-interactions">
+                            <span><FaHeart className="icon" style={{color:"red"}} /> {post.likes.length}</span>
+                            <span><FaComment className="icon" style={{color:"grey"}}/> {post.comments.length}</span>
                         </div>
+                        {isOwner && 
+                            <div className="btn btn-primary">
+                                <Link to={`/postform/${post.id}`}>
+                                    Editar
+                                </Link>
+                            </div>
+                        }
+                    </> : 
+                        <>
+                        <div className="post-card-buttons-container mt20">
+                            <button className="btn btn-primary">Aprovar</button>
+                            <button className="btn btn-inverse">Reprovar</button>
+                        </div>
+                        </>
                     }
                 </div>
+                
             </div>
         </Link>
     );

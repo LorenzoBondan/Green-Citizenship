@@ -113,3 +113,14 @@
     color: #c62828;
 }
 
+.post-card-buttons-container{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.post-card-buttons-container button {
+    width: 49%;
+}
