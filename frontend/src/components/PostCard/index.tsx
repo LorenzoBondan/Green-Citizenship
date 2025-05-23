@@ -19,7 +19,7 @@ type Props = {
     isAdminPage: boolean;
 }
 
-export default function PostCard({post, user, isAdminPage} : Props) {
+export default function PostCard({ post, user, isAdminPage }: Props) {
 
     const isOwner = user?.id === post.author.id;
 
@@ -30,57 +30,53 @@ export default function PostCard({post, user, isAdminPage} : Props) {
         CANCELED: <MdCancel className="status-icon canceled" title="Canceled" />
     };
 
-    return(
-        <Link to={`/posts/${post.id}`}>
-            <div className="card post-card">
-                <div className="post-header">
-                    <div className="post-title">
-                        <h2>{post.title}</h2>
-                        {post.isUrgent && <MdErrorOutline className="urgent-icon" title="Urgente" />}
-                    </div>
-                    <span className={`status-badge status-${post.status.toLowerCase()}`}>
-                        {statusIcons[post.status]}
-                        {DStatusEnum[post.status].label}
-                    </span>
+    const cardContent = (
+        <div className={`card post-card ${isAdminPage ? 'no-hover' : ''}`}>
+            <div className="post-header">
+                <div className="post-title">
+                    <h2>{post.title}</h2>
+                    {post.isUrgent && <MdErrorOutline className="urgent-icon" title="Urgente" />}
                 </div>
+                <span className={`status-badge status-${post.status.toLowerCase()}`}>
+                    {statusIcons[post.status]}
+                    {DStatusEnum[post.status].label}
+                </span>
+            </div>
 
-                <p className="post-description">
-                    {post.description.length > 120
-                        ? post.description.slice(0, 120) + "..."
-                        : post.description}
-                </p>
+            <p className="post-description">
+                {post.description.length > 120
+                    ? post.description.slice(0, 120) + "..."
+                    : post.description}
+            </p>
 
-                <div className="post-middle-container">
-                    <span className="post-author">por {post.author.name}</span>
-                    <span className="post-category">{post.category.name}</span>
-                </div>
+            <div className="post-middle-container">
+                <span className="post-author">por {post.author.name}</span>
+                <span className="post-category">{post.category.name}</span>
+            </div>
 
-                
-                <div className="post-footer">
-                    {!isAdminPage ? <>
+            <div className="post-footer">
+                {!isAdminPage ? (
+                    <>
                         <span className="post-date">{formatLocalDateTime(post.date.toString())}</span>
                         <div className="post-interactions">
-                            <span><FaHeart className="icon" style={{color:"red"}} /> {post.likes.length}</span>
-                            <span><FaComment className="icon" style={{color:"grey"}}/> {post.comments.length}</span>
+                            <span><FaHeart className="icon" style={{ color: "red" }} /> {post.likes.length}</span>
+                            <span><FaComment className="icon" style={{ color: "grey" }} /> {post.comments.length}</span>
                         </div>
-                        {isOwner && 
+                        {isOwner &&
                             <div className="btn btn-primary">
-                                <Link to={`/postform/${post.id}`}>
-                                    Editar
-                                </Link>
+                                <Link to={`/postform/${post.id}`}>Editar</Link>
                             </div>
                         }
-                    </> : 
-                        <>
-                        <div className="post-card-buttons-container mt20">
-                            <button className="btn btn-primary">Aprovar</button>
-                            <button className="btn btn-inverse">Reprovar</button>
-                        </div>
-                        </>
-                    }
-                </div>
-                
+                    </>
+                ) : (
+                    <div className="post-card-buttons-container mt20">
+                        <button className="btn btn-primary">Aprovar</button>
+                        <button className="btn btn-inverse">Reprovar</button>
+                    </div>
+                )}
             </div>
-        </Link>
+        </div>
     );
+
+    return isAdminPage ? cardContent : <Link to={`/posts/${post.id}`}>{cardContent}</Link>;
 }

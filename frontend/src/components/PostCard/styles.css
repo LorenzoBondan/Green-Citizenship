@@ -124,3 +124,8 @@
 .post-card-buttons-container button {
     width: 49%;
 }
+
+.post-card.no-hover:hover {
+    cursor: default;
+    transform: none;
+}
