@@ -13,6 +13,7 @@ import FormInput from '../../../components/FormInput';
 import FormTextArea from '../../../components/FormTextArea';
 import FormSelect from '../../../components/FormSelect';
 import { AuthContext } from '../../../utils/auth-context';
+import FormCheckbox from '../../../components/FormCheckBox';
 
 export default function PostForm() {
 
@@ -86,7 +87,7 @@ export default function PostForm() {
             placeholder: "Status"
         },
         isUrgent: {
-            value: null,
+            value: false,
             id: "isUrgent",
             name: "isUrgent",
             placeholder: "É Urgente"
@@ -108,6 +109,11 @@ export default function PostForm() {
         label: item.label,
     }));
 
+    function handleCheckboxChange(event: React.ChangeEvent<HTMLInputElement>) {
+        const checked = event.target.checked;
+        setFormData(forms.updateAndValidate(formData, event.target.name, checked));
+    }
+
     useEffect(() => {
         if (isEditing) {
             postService.findById(Number(params.postId))
@@ -117,6 +123,9 @@ export default function PostForm() {
                     // enums
                     const statusValue = response.data.status;
                     newFormData.status.value = statusOptions.find(option => option.value === statusValue);
+
+                    // boolean
+                    newFormData.isUrgent.value = !!response.data.isUrgent;
 
                     // postAttachment
     
@@ -224,6 +233,16 @@ export default function PostForm() {
                                     getOptionValue={(obj: any) => String(obj.id)}
                                 />
                                 <div className="form-error">{formData.category.message}</div>
+                            </div>
+                            <div>
+                                <FormCheckbox
+                                    id={formData.isUrgent.id}
+                                    name={formData.isUrgent.name}
+                                    label="É Urgente?"
+                                    checked={formData.isUrgent.value}
+                                    onChange={handleCheckboxChange}
+                                />
+                                <div className="form-error">{formData.isUrgent.message}</div>
                             </div>
                         </div>
                         <div className="post-form-buttons">

@@ -15,10 +15,10 @@ export default function DialogConfirmation({ id, message, onDialogAnswer }: Prop
                 <h2>{message}</h2>
                 <div className="dialog-btn-container">
                     <div onClick={() => onDialogAnswer(false, id)}>
-                        <ButtonInverse text="No" />
+                        <ButtonInverse text="Não" />
                     </div>
                     <div onClick={() => onDialogAnswer(true, id)}>
-                        <ButtonPrimary text="Yes" />
+                        <ButtonPrimary text="Sim" />
                     </div>
                 </div>
             </div>
