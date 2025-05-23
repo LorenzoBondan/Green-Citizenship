@@ -94,6 +94,36 @@ export default function PostCatalog({isAdminPage} : Props) {
         });
     }
 
+    function refreshPosts() {
+        const statusId = isAdminPage
+            ? [DStatusEnum.IN_REVISION.value]
+            : [DStatusEnum.IN_PROGRESS.value, DStatusEnum.COMPLETED.value];
+
+        const params: any = {
+            title: queryParams.title,
+            page: 0,
+            sort: "title,asc"
+        };
+
+        if (queryParams.categoryId !== 0) {
+            params.categoryId = queryParams.categoryId;
+        }
+
+        postService.findAll(
+            params.title,
+            params.categoryId,
+            statusId,
+            params.page,
+            undefined,
+            params.sort
+        ).then(response => {
+            const newPosts = response.data.content;
+            setPosts(newPosts);
+            setIsLastPage(response.data.last);
+            setQueryParam(prev => ({ ...prev, page: 0 }));
+        });
+    }
+
     return (
         <main>
             <section id="catalog-section" className="container">
@@ -113,7 +143,7 @@ export default function PostCatalog({isAdminPage} : Props) {
 
                 <div className="catalog-grid mb20 mt20">
                     {user && posts.map(post => (
-                        <PostCard post={post} user={user} isAdminPage={isAdminPage} key={post.id} />
+                        <PostCard post={post} user={user} isAdminPage={isAdminPage} key={post.id} onDelete={refreshPosts} />
                     ))}
                 </div>
 
