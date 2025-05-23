@@ -1,11 +1,9 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import './styles.css';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import * as forms from '../../../utils/forms';
 import * as postService from '../../../services/postService';
 import * as categoryService from '../../../services/categoryService';
-import * as authService from '../../../services/authService';
-import * as userService from '../../../services/userService';
 import { Link } from 'react-router-dom';
 import { DPostAttachment } from '../../../models/postAttachment';
 import { DCategory } from '../../../models/category';
@@ -14,6 +12,7 @@ import { DStatusEnum } from '../../../models/enums/statusEnum';
 import FormInput from '../../../components/FormInput';
 import FormTextArea from '../../../components/FormTextArea';
 import FormSelect from '../../../components/FormSelect';
+import { AuthContext } from '../../../utils/auth-context';
 
 export default function PostForm() {
 
@@ -22,6 +21,8 @@ export default function PostForm() {
     const navigate = useNavigate();
 
     const isEditing = params.postId !== undefined && params.postId !== 'create';
+
+    const { user } = useContext(AuthContext);
 
     const [postAttachment, setPostAttachment] = useState<DPostAttachment>(); // because we send it together
 
@@ -100,19 +101,6 @@ export default function PostForm() {
             .then(response => {
                 setCategories(response.data.content);
             });
-    }, []);
-
-    const [user, setUser] = useState<DUser>();
-
-    useEffect(() => {
-        if(authService.isAuthenticated()){
-          userService.findMe()
-          .then(response => {
-            setUser(response.data);
-          })
-          .catch(() => {
-          });
-        }
     }, []);
 
     const statusOptions = Object.values(DStatusEnum).map((item) => ({

@@ -1,13 +1,17 @@
 import './styles.css';
 import { useContext, useState } from 'react';
 import * as authService from '../../../services/authService';
+import * as userService from '../../../services/userService';
 import * as forms from '../../../utils/forms';
 import { useNavigate } from 'react-router-dom';
 import { ContextToken } from '../../../utils/context-token';
 import FormInput from '../../../components/FormInput';
 import ButtonPrimary from '../../../components/ButtonPrimary';
+import { AuthContext } from '../../../utils/auth-context';
 
 export default function Login() {
+
+    const { setUser } = useContext(AuthContext);
 
     const { setContextTokenPayload } = useContext(ContextToken);
 
@@ -51,6 +55,10 @@ export default function Login() {
             .then(response => {
                 authService.saveAccessToken(response.data.access_token);
                 setContextTokenPayload(authService.getAccessTokenPayload());
+                userService.findMe().then(res => {
+                    setUser(res.data);
+                    navigate("/");
+                });
                 navigate("/");
             })
             .catch(() => {

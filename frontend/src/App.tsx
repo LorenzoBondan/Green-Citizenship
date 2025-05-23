@@ -13,6 +13,7 @@ import PostForm from "./routes/ClientHome/PostForm";
 import { PrivateRoute } from "./components/PrivateRoute";
 import Admin from "./routes/Admin";
 import AdminHome from "./routes/Admin/AdminHome";
+import AuthProvider from "./utils/AuthProvider";
 
 export default function App() {
 
@@ -28,6 +29,7 @@ export default function App() {
 
   return (
     <ContextToken.Provider value={{ contextTokenPayload, setContextTokenPayload }}>
+      <AuthProvider>
         <HistoryRouter history={history}>
           <Routes>
             <Route path="/" element={<ClientHome /> }>
@@ -47,6 +49,7 @@ export default function App() {
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </HistoryRouter>
+      </AuthProvider>
     </ContextToken.Provider>
   );
 }

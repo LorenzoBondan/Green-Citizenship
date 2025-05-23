@@ -1,16 +1,14 @@
 import './styles.css';
 import * as postService from '../../../services/postService';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import SearchBar from '../../../components/SearchBar';
 import ButtonNextPage from '../../../components/ButtonNextPage';
-import { DUser } from '../../../models/user';
-import * as userService from '../../../services/userService';
-import * as authService from '../../../services/authService';
 import { MdClear } from "react-icons/md";
 import { DPost } from '../../../models/post';
 import PostCard from '../../../components/PostCard';
 import { DStatusEnum } from '../../../models/enums/statusEnum';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../../utils/auth-context';
 
 type QueryParams = {
     page: number;
@@ -19,6 +17,7 @@ type QueryParams = {
 }
 
 export default function PostCatalog() {
+    const { user } = useContext(AuthContext);
     const [isLastPage, setIsLastPage] = useState(false);
     const [posts, setPosts] = useState<DPost[]>([]);
     const [queryParams, setQueryParam] = useState<QueryParams>({
@@ -78,16 +77,6 @@ export default function PostCatalog() {
             page: 0
         }));
     }
-
-    const [user, setUser] = useState<DUser>();
-
-    useEffect(() => {
-        if (authService.isAuthenticated()) {
-            userService.findMe()
-                .then(response => setUser(response.data))
-                .catch(() => {});
-        }
-    }, []);
 
     function handleClearFilters() {
         setPosts([]);

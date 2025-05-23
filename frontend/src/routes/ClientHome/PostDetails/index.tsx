@@ -1,16 +1,14 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import './styles.css';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { DPost } from '../../../models/post';
 import * as postService from '../../../services/postService';
-import * as userService from '../../../services/userService';
-import * as authService from '../../../services/authService';
 import { Link } from 'react-router-dom';
 import PostDetailsCard from '../../../components/PostDetailsCard';
 import CommentForm from '../../../components/CommentForm';
 import { isAuthenticated } from '../../../services/authService';
 import CommentCard from '../../../components/CommentCard';
-import { DUser } from '../../../models/user';
+import { AuthContext } from '../../../utils/auth-context';
 
 export default function PostDetails() {
 
@@ -19,7 +17,7 @@ export default function PostDetails() {
     const navigate = useNavigate();
   
     const [post, setPost] = useState<DPost>();
-    const [user, setUser] = useState<DUser>();
+    const { user } = useContext(AuthContext);
 
     useEffect(() => {
       findPostById();
@@ -40,17 +38,6 @@ export default function PostDetails() {
         navigate("/");
       }
     }, [params.postId, navigate]);
-    
-    useEffect(() => {
-      if(authService.isAuthenticated()){
-        userService.findMe()
-        .then(response => {
-          setUser(response.data);
-        })
-        .catch(() => {
-        });
-      }
-    }, []);
 
     return(
       <main>
