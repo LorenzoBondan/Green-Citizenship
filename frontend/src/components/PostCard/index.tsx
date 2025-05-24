@@ -4,7 +4,7 @@ import { DPost } from "../../models/post";
 import { formatLocalDateTime } from "../../utils/formatters";
 import './styles.css';
 import * as postService from '../../services/postService';
-import { FaComment, FaHeart } from "react-icons/fa";
+import { FaComment, FaHeart, FaRegHeart } from "react-icons/fa";
 import {
     MdOutlineHistory,
     MdAutorenew,
@@ -27,6 +27,10 @@ type Props = {
 export default function PostCard({ post, user, isAdminPage, onDelete }: Props) {
     const isOwner = user?.id === post.author.id;
     const navigate = useNavigate();
+
+    const [likes, setLikes] = useState(post.likes);
+
+    const isProjectLiked = likes.some(like => like.user.id === user?.id);
 
     const statusIcons: Record<string, JSX.Element> = {
         IN_REVISION: <MdOutlineHistory className="status-icon in-revision" title="In Revision" />,
@@ -132,7 +136,22 @@ export default function PostCard({ post, user, isAdminPage, onDelete }: Props) {
                     <>
                         <span className="post-date">{formatLocalDateTime(post.date.toString())}</span>
                         <div className="post-interactions">
-                            <span><FaHeart className="icon" style={{ color: "red" }} /> {post.likes.length}</span>
+                            <span>
+                                {isProjectLiked ? (
+                                    <FaHeart
+                                        className="icon like-icon"
+                                        style={{ color: 'red', cursor: 'pointer' }}
+                                        title="Descurtir"
+                                    />
+                                    ) : (
+                                    <FaRegHeart
+                                        className="icon like-icon"
+                                        style={{ color: 'grey', cursor: 'pointer' }}
+                                        title="Curtir"
+                                    />
+                                )}
+                                <strong>{likes.length}</strong>
+                            </span>
                             <span><FaComment className="icon" style={{ color: "grey" }} /> {post.comments.length}</span>
                         </div>
                         {isOwner &&

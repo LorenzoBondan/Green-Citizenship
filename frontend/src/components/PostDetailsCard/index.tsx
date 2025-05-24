@@ -1,15 +1,44 @@
 import './styles.css';
-import { MdAutorenew, MdCancel, MdCheckCircle, MdOutlineHistory } from "react-icons/md";
-import { DPost } from "../../models/post"
+import { useState, useContext } from "react";
+import { FaHeart, FaRegHeart, FaComment } from "react-icons/fa";
+import {
+    MdAutorenew,
+    MdCancel,
+    MdCheckCircle,
+    MdOutlineHistory
+} from "react-icons/md";
+import { DPost } from "../../models/post";
 import { DStatusEnum } from "../../models/enums/statusEnum";
 import { formatLocalDateTime } from "../../utils/formatters";
+import { AuthContext } from '../../utils/auth-context';
+import * as likeService from '../../services/likeService';
 
 type Props = {
     post: DPost;
-    onEdit: Function;
 }
 
-export default function PostDetailsCard({post, onEdit}: Props) {
+export default function PostDetailsCard({ post }: Props) {
+    const { user } = useContext(AuthContext);
+    const [likes, setLikes] = useState(post.likes);
+
+    const isProjectLiked = likes.some(like => like.user.id === user?.id);
+
+    function handleLike() {
+        likeService.insert({ id: 0, user: user!, post, comment: null! })
+            .then(response => {
+                setLikes(prev => [...prev, response.data]);
+            });
+    }
+
+    function handleUnlike() {
+        const like = likes.find(like => like.user.id === user?.id);
+        if (like) {
+            likeService.deleteById(like.id)
+                .then(() => {
+                    setLikes(prev => prev.filter(l => l.id !== like.id));
+                });
+        }
+    }
 
     const statusIcons: Record<string, JSX.Element> = {
         IN_REVISION: <MdOutlineHistory className="status-icon in-revision" title="In Revision" />,
@@ -27,21 +56,43 @@ export default function PostDetailsCard({post, onEdit}: Props) {
                     {DStatusEnum[post.status].label}
                 </span>
             </div>
+
             <div className="post-details-body">
                 <p>{post.description}</p>
                 <p><strong>Data de publicação:</strong> {formatLocalDateTime(post.date.toString())}</p>
+
                 <div className="post-footer">
                     <div className="post-interactions">
                         <span>
-                            <strong>{post.likes.length}</strong> {post.likes.length === 1 ? ' curtida' : ' curtidas'}
+                            {isProjectLiked ? (
+                                <FaHeart
+                                    className="icon like-icon"
+                                    style={{ color: 'red', cursor: 'pointer' }}
+                                    title="Descurtir"
+                                    onClick={handleUnlike}
+                                />
+                            ) : (
+                                <FaRegHeart
+                                    className="icon like-icon"
+                                    style={{ color: 'grey', cursor: 'pointer' }}
+                                    title="Curtir"
+                                    onClick={handleLike}
+                                />
+                            )}
+                            <strong>{likes.length}</strong>
                         </span>
+
                         <span>
-                            <strong>{post.comments.length}</strong> {post.comments.length === 1 ? ' comentário' : ' comentários'}
+                            <FaComment
+                                className="icon comment-icon"
+                                style={{ color: 'grey', marginLeft: '10px' }}
+                                title="Comentários"
+                            />
+                            <strong>{post.comments.length}</strong>
                         </span>
                     </div>
                 </div>
             </div>
-            
         </div>
     );
 }
