@@ -83,6 +83,23 @@ export default function PostCard({ post, user, isAdminPage, onDelete }: Props) {
         }
     }
 
+    function handleUpdateStatus(status: "COMPLETED" | "CANCELED") {
+        postService.updateStatus(post.id, status)
+            .then(() => {
+            setDialogInfoData({
+                visible: true,
+                message: `Publicação ${status === "COMPLETED" ? "aprovada" : "reprovada"} com sucesso!`
+            });
+            onDelete();
+            })
+            .catch(error => {
+            setDialogInfoData({
+                visible: true,
+                message: error.response?.data?.error || "Erro ao atualizar status."
+            });
+        });
+    }
+
     return (
         <div
             className={`card post-card ${isAdminPage ? 'no-hover' : ''}`}
@@ -134,8 +151,18 @@ export default function PostCard({ post, user, isAdminPage, onDelete }: Props) {
                     </>
                 ) : (
                     <div className="post-card-buttons-container mt20">
-                        <button className="btn btn-primary">Aprovar</button>
-                        <button className="btn btn-inverse">Reprovar</button>
+                        <button
+                            className="btn btn-primary"
+                            onClick={() => handleUpdateStatus("COMPLETED")}
+                        >
+                            Aprovar
+                        </button>
+                        <button
+                            className="btn btn-inverse"
+                            onClick={() => handleUpdateStatus("CANCELED")}
+                        >
+                            Reprovar
+                        </button>
                     </div>
                 )}
             </div>
