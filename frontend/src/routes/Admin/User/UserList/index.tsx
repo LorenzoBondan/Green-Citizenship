@@ -39,7 +39,7 @@ export default function UserList() {
     });
 
     useEffect(() => {
-        userService.findAll(queryParams.page, 8, "name,asc")
+        userService.findAll(queryParams.name, queryParams.page, 8, "name,asc")
             .then(response => {
                 const nextPage = response.data.content;
                 setUsers(users.concat(nextPage));

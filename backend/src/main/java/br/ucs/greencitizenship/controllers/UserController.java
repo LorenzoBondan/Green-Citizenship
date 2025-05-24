@@ -37,8 +37,8 @@ public class UserController {
     @Transactional(readOnly = true)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CITIZEN')")
     @GetMapping
-    public ResponseEntity<?> findAll(Pageable pageable){
-        return ResponseEntity.ok(service.findAll(pageable));
+    public ResponseEntity<?> findAll(@RequestParam(value = "name", required = false, defaultValue = "") String name, Pageable pageable){
+        return ResponseEntity.ok(service.findAll(name, pageable));
     }
 
     /**

@@ -2,6 +2,8 @@ package br.ucs.greencitizenship.repositories;
 
 import br.ucs.greencitizenship.entities.User;
 import br.ucs.greencitizenship.projections.UserDetailsProjection;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -13,6 +15,8 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Integer> {
 
 	Optional<User> findByEmail(String email);
+
+	Page<User> findByNameContainsIgnoreCase(String name, Pageable pageable);
 
     @Query(nativeQuery = true, value = """
 				SELECT tb_user.email AS username, tb_user.password, tb_role.id AS roleId, tb_role.authority

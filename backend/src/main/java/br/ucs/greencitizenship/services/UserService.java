@@ -27,8 +27,8 @@ public class UserService implements UserDetailsService {
     private final UserDtoToEntityAdapter adapter;
     private final AuthService authService;
 
-    public Page<UserDTO> findAll(Pageable pageable){
-        Page<User> list = repository.findAll(pageable);
+    public Page<UserDTO> findAll(String name, Pageable pageable){
+        Page<User> list = repository.findByNameContainsIgnoreCase(name, pageable);
         return list.map(adapter::toDto);
     }
 
