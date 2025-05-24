@@ -17,6 +17,8 @@ type Props = {
 }
 
 export default function CommentCard({ comment, user, onDelete }: Props) {
+    console.log(comment);
+    const isPostOwner = user?.id === comment.post.author.id;
     const isOwner = user?.id === comment.user.id;
     const { user: authUser } = useContext(AuthContext);
 
@@ -74,7 +76,7 @@ export default function CommentCard({ comment, user, onDelete }: Props) {
                     <p>{formatLocalDateTime(comment.date.toString())}</p>
                 </div>
 
-                {isOwner && (
+                {(isPostOwner || isOwner) && (
                     <div className="comment-actions">
                         <button
                             className="delete-btn"
