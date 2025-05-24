@@ -13,7 +13,7 @@ export default function AdminHome() {
                 <h2 className="section-title mb20">Bem-vindo a tela de administrador, {user?.name}</h2>
             </section>
             <section className='container admin-items-section'>
-                <div className='admin-item card'>
+                <div className='admin-item card mb20'>
                     <Link to="/admin/posts">
                         <div className='btn btn-primary'>Publicações pendentes</div>
                     </Link>

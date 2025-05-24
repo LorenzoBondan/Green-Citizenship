@@ -29,7 +29,7 @@ export default function SearchBar({ onSearch }: Props) {
             <input 
                 value={text}
                 type="text" 
-                placeholder="Name" 
+                placeholder="Nome" 
                 onChange={handleChange}
             />
             <button onClick={handleResetClick}>🗙</button>

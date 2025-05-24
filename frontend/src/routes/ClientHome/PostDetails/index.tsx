@@ -42,7 +42,7 @@ export default function PostDetails() {
     return(
       <main>
         <section id="post-details-section" className="container">
-          {post && <PostDetailsCard post={post} isEditable={false} onEdit={findPostById} /> }
+          {post && <PostDetailsCard post={post} onEdit={findPostById} /> }
 
           <div className="comments-grid mb20 mt20">
             {post?.comments.map(comment => (
