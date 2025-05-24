@@ -7,5 +7,11 @@ export type DUser = {
   email: string;
   userAttachment: DUserAttachment;
 
+  roles: DRole[];
   notifications: DNotification[];
 };
+
+export type DRole = {
+  id: number;
+  authority: string;
+}
