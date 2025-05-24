@@ -1,0 +1,28 @@
+.notification-wrapper {
+  position: relative;
+}
+
+.notification-icon {
+  cursor: pointer;
+  font-size: 22px;
+  color: white;
+}
+
+.notification-list {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  border-radius: 8px;
+  z-index: 10;
+}
+
+.empty {
+  padding: 10px;
+  color: gray;
+  text-align: center;
+}

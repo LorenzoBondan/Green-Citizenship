@@ -5,7 +5,7 @@ const route = "/api/notification";
 
 export function findAllByUserId(userId: number) {
     return requestBackend({ 
-        url: `${route}}`,
+        url: `${route}`,
         params: {
             userId
         }, 

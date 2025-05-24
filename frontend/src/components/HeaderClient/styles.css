@@ -7,25 +7,3 @@
   height: 20px;
   width: 20px;
 }
-
-.notification-icon {
-  position: relative;
-  cursor: pointer;
-  margin-right: 15px;
-}
-
-.notification-icon svg {
-  color: #ffffff; /* ou outra cor de ícone */
-}
-
-/* Badge opcional para contador de notificações futuras */
-.notification-icon::after {
-  content: "";
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  background: red;
-  border-radius: 50%;
-  width: 8px;
-  height: 8px;
-}

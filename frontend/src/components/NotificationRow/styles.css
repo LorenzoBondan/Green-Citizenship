@@ -6,7 +6,8 @@
 }
 
 .notification-row.unread {
-  background-color: #eef6ff;
+  background-color: var(--color-card-border);
+  color: var(--color-font-primary);
   font-weight: bold;
 }
 
