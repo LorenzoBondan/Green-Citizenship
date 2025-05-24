@@ -6,6 +6,8 @@ import { useContext } from 'react';
 import { ContextToken } from '../../utils/context-token';
 import LoggedUser from '../LoggedUser';
 import { FaUser } from 'react-icons/fa';
+import { BsBellFill } from 'react-icons/bs';
+
 
 export default function HeaderClient() {
 
@@ -30,13 +32,19 @@ export default function HeaderClient() {
                         }
                         {
                             authService.isAuthenticated() && (
-                                <Link to="/profile">
-                                    <div className="menu-item">
-                                        <FaUser />
+                                <>
+                                    <div className="menu-item notification-icon">
+                                        <BsBellFill size={22} />
                                     </div>
-                                </Link>
+                                    <Link to="/profile">
+                                        <div className="menu-item">
+                                            <FaUser />
+                                        </div>
+                                    </Link>
+                                </>
                             )
                         }
+
                     </div>
                     <LoggedUser />
                 </div>
