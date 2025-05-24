@@ -441,3 +441,8 @@ nav a {
 .dialog-btn {
   width: 100%;
 }
+
+.like-icon, .comment-icon {
+  font-size: 1.2rem;
+  vertical-align: middle;
+}
