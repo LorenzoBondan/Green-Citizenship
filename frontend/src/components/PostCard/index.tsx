@@ -16,6 +16,8 @@ import { DUser } from "../../models/user";
 import { useState } from "react";
 import DialogInfo from "../DialogInfo";
 import DialogConfirmation from "../DialogConfirmation";
+import FormLabel from "../FormLabel";
+import FormSelect from "../FormSelect";
 
 type Props = {
     post: DPost;
@@ -87,20 +89,40 @@ export default function PostCard({ post, user, isAdminPage, onDelete }: Props) {
         }
     }
 
-    function handleUpdateStatus(status: "COMPLETED" | "CANCELED") {
-        postService.updateStatus(post.id, status)
+    const [formData, setFormData] = useState({
+    status: {
+        value: post.status,
+        message: ""
+    }
+    });
+
+    const statusOptions = Object.values(DStatusEnum).map((item) => ({
+        value: item.name,
+        label: item.label,
+    }));
+
+    function handleStatusChange(selectedOption: any) {
+        setFormData((prevData) => ({
+            ...prevData,
+            status: {
+                value: selectedOption.value,
+                message: ""
+            }
+        }));
+
+        postService.updateStatus(post.id, selectedOption.value)
             .then(() => {
-            setDialogInfoData({
-                visible: true,
-                message: `Publicação ${status === "COMPLETED" ? "aprovada" : "reprovada"} com sucesso!`
-            });
-            onDelete();
+                setDialogInfoData({
+                    visible: true,
+                    message: "Status atualizado com sucesso!"
+                });
+                onDelete();
             })
-            .catch(error => {
-            setDialogInfoData({
-                visible: true,
-                message: error.response?.data?.error || "Erro ao atualizar status."
-            });
+            .catch((error) => {
+                setDialogInfoData({
+                    visible: true,
+                    message: error.response?.data?.error || "Erro ao atualizar status."
+                });
         });
     }
 
@@ -170,18 +192,17 @@ export default function PostCard({ post, user, isAdminPage, onDelete }: Props) {
                     </>
                 ) : (
                     <div className="post-card-buttons-container mt20">
-                        <button
-                            className="btn btn-primary"
-                            onClick={() => handleUpdateStatus("COMPLETED")}
-                        >
-                            Aprovar
-                        </button>
-                        <button
-                            className="btn btn-inverse"
-                            onClick={() => handleUpdateStatus("CANCELED")}
-                        >
-                            Reprovar
-                        </button>
+                        <div className="w100">
+                            <FormLabel text="Alterar status" />
+                            <FormSelect
+                                className="form-control form-select-container"
+                                options={statusOptions}
+                                value={formData.status.value}
+                                placeholder="Selecione o status"
+                                onChange={handleStatusChange}
+                            />
+                            <div className="form-error">{formData.status.message}</div>
+                        </div>
                     </div>
                 )}
             </div>
