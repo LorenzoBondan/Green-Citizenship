@@ -8,6 +8,7 @@ import { ContextToken } from '../../../utils/context-token';
 import FormInput from '../../../components/FormInput';
 import ButtonPrimary from '../../../components/ButtonPrimary';
 import { AuthContext } from '../../../utils/auth-context';
+import { Link } from 'react-router-dom';
 
 export default function Login() {
 
@@ -110,6 +111,9 @@ export default function Login() {
                         <div className="login-form-buttons mt20">
                             <ButtonPrimary text='Login' />
                         </div>
+
+                        <p className='mt20' style={{color:"green"}}>Não tem conta? <Link to="/register">Cadastre-se</Link></p>
+
                     </form>
                 </div>
             </section>

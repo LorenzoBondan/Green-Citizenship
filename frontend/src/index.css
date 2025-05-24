@@ -446,3 +446,11 @@ nav a {
   font-size: 1.2rem;
   vertical-align: middle;
 }
+
+.form-buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
