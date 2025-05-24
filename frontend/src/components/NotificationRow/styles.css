@@ -1,0 +1,15 @@
+.notification-row {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+  background-color: white;
+}
+
+.notification-row.unread {
+  background-color: #eef6ff;
+  font-weight: bold;
+}
+
+.notification-row.read {
+  opacity: 0.7;
+}
