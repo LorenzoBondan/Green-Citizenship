@@ -13,7 +13,8 @@ export function findAll(page?: number, size = 12, sort?: string) {
             sort,
             page,
             size
-        }
+        },
+        withCredentials: true
     }
 
     return requestBackend(config);
@@ -21,6 +22,7 @@ export function findAll(page?: number, size = 12, sort?: string) {
 
 export function findById(id: number) {
     return requestBackend({ 
-        url: `${route}/${id}`
+        url: `${route}/${id}`,
+        withCredentials: true
     });
 }

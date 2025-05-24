@@ -47,7 +47,7 @@ public class RoleController {
             @ApiResponse(responseCode = "404", description = "Not found")
     })
     @Transactional(readOnly = true)
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> findById(@PathVariable("id") Integer id){
         return ResponseEntity.ok(service.findById(id));

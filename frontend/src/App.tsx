@@ -14,6 +14,9 @@ import { PrivateRoute } from "./components/PrivateRoute";
 import Admin from "./routes/Admin";
 import AdminHome from "./routes/Admin/AdminHome";
 import AuthProvider from "./utils/AuthProvider";
+import Users from "./routes/Admin/User";
+import UserList from "./routes/Admin/User/UserList";
+import UserForm from "./routes/Admin/User/UserForm";
 
 export default function App() {
 
@@ -43,7 +46,10 @@ export default function App() {
             <Route path="/admin/" element={<PrivateRoute roles={['ROLE_ADMIN']}><Admin /></PrivateRoute>}>
               <Route index element={<Navigate to="/admin/home" />} />
               <Route path="home" element={<AdminHome />} />
-              <Route path="users" element={<></>} />
+              <Route path="users" element={<Users />}>
+                <Route index element={<UserList />} />
+                <Route path=":userId" element={<UserForm />} />
+              </Route>
               <Route path="posts" element={<PostCatalog isAdminPage={true} />} />
             </Route>
             <Route path="*" element={<Navigate to="/" />} />
