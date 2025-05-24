@@ -122,7 +122,7 @@ export default function PostForm() {
                     
                     // enums
                     const statusValue = response.data.status;
-                    newFormData.status.value = statusOptions.find(option => option.value === statusValue);
+                    newFormData.status.value = statusOptions.find(option => option.value === statusValue)?.value;
 
                     // boolean
                     newFormData.isUrgent.value = !!response.data.isUrgent;
