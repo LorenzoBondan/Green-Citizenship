@@ -1,4 +1,3 @@
-import { DNotification } from "./notification";
 import { DUserAttachment } from "./userAttachment";
 
 export type DUser = {
@@ -8,7 +7,6 @@ export type DUser = {
   userAttachment: DUserAttachment;
 
   roles: DRole[];
-  notifications: DNotification[];
 };
 
 export type DRole = {

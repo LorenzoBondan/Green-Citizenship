@@ -18,6 +18,7 @@ import Users from "./routes/Admin/User";
 import UserList from "./routes/Admin/User/UserList";
 import UserForm from "./routes/Admin/User/UserForm";
 import UserRegisterForm from "./routes/ClientHome/UserRegisterForm";
+import Profile from "./routes/ClientHome/Profile";
 
 export default function App() {
 
@@ -44,6 +45,7 @@ export default function App() {
               <Route path="postform/:postId" element={<PostForm />} />
               <Route path="login" element={<Login />} />
               <Route path="register" element={<UserRegisterForm />} />
+              <Route path="profile" element={<Profile />} />
             </Route>
             <Route path="/admin/" element={<PrivateRoute roles={['ROLE_ADMIN']}><Admin /></PrivateRoute>}>
               <Route index element={<Navigate to="/admin/home" />} />
