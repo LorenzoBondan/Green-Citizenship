@@ -175,6 +175,8 @@ export default function PostForm() {
 
         if (isEditing) {
             requestBody.id = Number(params.postId);
+        } else {
+            requestBody.status = DStatusEnum.IN_REVISION.name;
         }
 
         const request = isEditing

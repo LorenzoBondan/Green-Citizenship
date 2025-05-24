@@ -6,7 +6,6 @@ import { useContext } from 'react';
 import { ContextToken } from '../../utils/context-token';
 import LoggedUser from '../LoggedUser';
 import { FaUser } from 'react-icons/fa';
-import { BsBellFill } from 'react-icons/bs';
 import NotificationList from '../NotificationList';
 
 
