@@ -91,7 +91,7 @@ export default function CommentForm({post, onButtonClick} : Props) {
             <section id="comment-form-section">
                 <div className="comment-form-container">
                     <form className="card comment-form-card" onSubmit={handleSubmit}>
-                        <div className="form-controls-container">
+                        <div>
                             <div>
                                 <label htmlFor="">Comentário</label>
                                 <FormTextArea
@@ -103,7 +103,7 @@ export default function CommentForm({post, onButtonClick} : Props) {
                                 <div className="form-error">{formData.text.message}</div>
                             </div>
                         </div>
-                        <div className="comment-form-buttons">
+                        <div className="comment-form-buttons mt20">
                             <button type="submit" className="btn btn-primary">Enviar</button>
                         </div>
                     </form>
