@@ -4,17 +4,42 @@ import { DUser } from '../../models/user';
 import './styles.css';
 import { formatLocalDateTime } from '../../utils/formatters';
 import avatarPlaceHolder from '../../assets/avatar-placeholder.jpg';
+import { useState } from 'react';
+import DialogConfirmation from '../DialogConfirmation';
 
 type Props = {
     comment: DComment;
     user?: DUser;
-    onEdit: Function;
     onDelete: Function;
 }
 
-export default function CommentCard({ comment, user, onEdit, onDelete }: Props) {
+export default function CommentCard({ comment, user, onDelete }: Props) {
 
     const isOwner = user?.id === comment.user.id;
+
+    const [dialogConfirmationData, setDialogConfirmationData] = useState({
+        visible: false,
+        id: 0,
+        message: "Tem certeza que deseja excluir este comentário?"
+    });
+
+    function handleDeleteClick(commentId: number) {
+        setDialogConfirmationData({
+            visible: true,
+            id: commentId,
+            message: "Tem certeza que deseja excluir este comentário?"
+        });
+    }
+
+    function handleDialogAnswer(answer: boolean, commentId: number) {
+        if (answer) {
+            commentService.deleteById(commentId)
+                .then(() => {
+                    onDelete();
+                });
+        }
+        setDialogConfirmationData(prev => ({ ...prev, visible: false }));
+    }
 
     return (
         <div className="card comment-card">
@@ -26,8 +51,7 @@ export default function CommentCard({ comment, user, onEdit, onDelete }: Props) 
                 </div>
                 {isOwner && (
                     <div className="comment-actions">
-                        <button className="edit-btn">Editar</button>
-                        <button className="delete-btn">Excluir</button>
+                        <button className="delete-btn" onClick={() => handleDeleteClick(comment.id)}>Excluir</button>
                     </div>
                 )}
             </section>
@@ -35,6 +59,14 @@ export default function CommentCard({ comment, user, onEdit, onDelete }: Props) 
             <section className="comment-card-content">
                 <p>{comment.text}</p>
             </section>
+
+            {dialogConfirmationData.visible && (
+                <DialogConfirmation
+                    id={dialogConfirmationData.id}
+                    message={dialogConfirmationData.message}
+                    onDialogAnswer={handleDialogAnswer}
+                />
+            )}
         </div>
     );
 }
