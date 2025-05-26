@@ -1,9 +1,22 @@
 .header-client {
   background-color: var(--color-btn-primary);
   color: var(--color-font-tertiary);
+  position: relative;
 }
 
-.menu-item svg{
-  height: 20px;
-  width: 20px;
+.header-client .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.header-logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.header-logo img {
+  height: 60px;
 }
