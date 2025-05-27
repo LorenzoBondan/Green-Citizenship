@@ -32,7 +32,7 @@ export default function SearchBar({ onSearch }: Props) {
                 placeholder="Nome" 
                 onChange={handleChange}
             />
-            <button onClick={handleResetClick}>🗙</button>
+            <button onClick={handleResetClick}></button>
         </form>
     );
 }

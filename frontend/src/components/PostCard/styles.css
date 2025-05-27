@@ -119,6 +119,12 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    gap: 1rem;
+
+    .btn:hover {
+        transition: ease 0.3s;
+        filter: brightness(0.95);
+    }
 }
 
 .post-card.no-hover:hover {

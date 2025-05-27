@@ -37,6 +37,13 @@
     cursor: pointer;
 }
 
+
+ a:hover {
+    transition: ease 0.3s;
+    filter: brightness(0.95);
+ }
+
+
 @media(min-width:678px) {
     .catalog-grid {
         grid-template-columns: repeat(2, 1fr);
