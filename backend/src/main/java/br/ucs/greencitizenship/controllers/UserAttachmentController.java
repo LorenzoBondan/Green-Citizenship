@@ -1,7 +1,9 @@
 package br.ucs.greencitizenship.controllers;
 
 import br.ucs.greencitizenship.dtos.userattachment.UserAttachmentDTO;
+import br.ucs.greencitizenship.dtos.userattachment.UserAttachmentPersist;
 import br.ucs.greencitizenship.services.UserAttachmentService;
+import br.ucs.greencitizenship.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -10,10 +12,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Tag(name = "User Attachment")
 @RequiredArgsConstructor
@@ -22,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserAttachmentController {
 
     private final UserAttachmentService service;
+    private final UserService userService;
 
     /**
      * @param id represents the ID of the UserAttachment to be searched
@@ -40,7 +47,9 @@ public class UserAttachmentController {
     }
 
     /**
-     * @param dto represents the UserAttachment object to be created
+     * @param id    user id
+     * @param file      multipart file.
+     * @param name      file name
      */
     @Operation(summary = "Insert a new UserAttachment", method = "POST")
     @ApiResponses(value = {
@@ -53,29 +62,30 @@ public class UserAttachmentController {
     })
     @Transactional
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CITIZEN')")
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> create(
-            @Valid  @RequestBody
-            @Schema(
-                    description = "UserAttachment object for creation",
-                    requiredProperties = "user.id, attachment.id",
-                    example = """
-                    {
-                        "user": {
-                            "id": 1
-                        },
-                        "attachment": {
-                            "id": 1
-                        }
-                    }
-                    """
-            )
-            UserAttachmentDTO dto){
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.insert(dto));
+            @RequestParam("id") Integer id,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam(value = "name", required = false) String name) {
+
+        byte[] bytes;
+        try {
+            bytes = file.getBytes();
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("Erro ao processar o arquivo");
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.insert(
+                new UserAttachmentPersist(
+                        null, bytes, name, userService.findById(id)
+                ))
+        );
     }
 
     /**
-     * @param dto represents the UserAttachment object to be updated
+     * @param id    user id
+     * @param file      multipart file.
+     * @param name      file name
      */
     @Operation(summary = "Update a UserAttachment", method = "PUT")
     @ApiResponses(value = {
@@ -89,26 +99,24 @@ public class UserAttachmentController {
     })
     @Transactional
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CITIZEN')")
-    @PutMapping
+    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> update(
-            @Valid @RequestBody
-            @Schema(
-                    description = "UserAttachment object for editing",
-                    requiredProperties = "id, user.id, attachment.id",
-                    example = """
-                    {
-                        "id": 1,
-                        "user": {
-                            "id": 1
-                        },
-                        "attachment": {
-                            "id": 1
-                        }
-                    }
-                    """
-            )
-            UserAttachmentDTO dto){
-        return ResponseEntity.ok(service.update(dto));
+            @RequestParam("id") Integer id,
+            @RequestParam(value = "file") MultipartFile file,
+            @RequestParam(value = "name", required = false) String name) {
+
+        byte[] bytes = null;
+        if (file != null && !file.isEmpty()) {
+            try {
+                bytes = file.getBytes();
+            } catch (IOException e) {
+                return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("Erro ao processar o arquivo");
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(service.update(new UserAttachmentPersist(
+                id, bytes, name, userService.findById(id)
+        )));
     }
 
     /**
