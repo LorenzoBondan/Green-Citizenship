@@ -453,6 +453,74 @@
 			]
 		},
 		{
+			"name": "Notification",
+			"item": [
+				{
+					"name": "Find All By User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/notification?userId=2",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"notification"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Status",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/notification/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"notification",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Post",
 			"item": [
 				{

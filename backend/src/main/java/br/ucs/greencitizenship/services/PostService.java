@@ -1,6 +1,7 @@
 package br.ucs.greencitizenship.services;
 
 import br.ucs.greencitizenship.dtos.enums.StatusEnumDTO;
+import br.ucs.greencitizenship.dtos.notification.NotificationDTO;
 import br.ucs.greencitizenship.dtos.post.PostDTO;
 import br.ucs.greencitizenship.dtos.post.PostDtoToEntityAdapter;
 import br.ucs.greencitizenship.entities.Post;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -23,6 +25,7 @@ public class PostService {
     private final PostRepository repository;
     private final PostDtoToEntityAdapter adapter;
     private final AuthService authService;
+    private final NotificationService notificationService;
 
     public Page<PostDTO> findAllByTitleAndCategoryAndStatus(String title, Integer categoryId, List<Integer> statusId, Pageable pageable){
         Page<Post> list = repository.findByTitleAndCategoryAndStatus(title, categoryId, statusId, pageable);
@@ -60,6 +63,13 @@ public class PostService {
         PostDTO post = findById(id);
         post.setStatus(statusEnum);
         repository.save(adapter.toEntity(post));
+
+        notificationService.insert(NotificationDTO.builder()
+                        .text("Sua publicação: " + post.getTitle() + " teve seu status alterado para: " + post.getStatus().getLabel())
+                        .user(post.getAuthor())
+                        .date(LocalDateTime.now())
+                        .isRead(false)
+                .build());
     }
 
     public void delete(Integer id){
