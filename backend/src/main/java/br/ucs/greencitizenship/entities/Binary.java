@@ -16,6 +16,7 @@ public class Binary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Lob
     private byte[] bytes;
 
     public Binary(Integer id) {
