@@ -1,3 +1,19 @@
+.header-client .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.header-logo img {
+  height: 60px;
+}
+
 .header-client {
   background-color: var(--color-btn-primary);
   color: var(--color-font-tertiary);

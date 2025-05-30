@@ -7,6 +7,7 @@ import { ContextToken } from '../../utils/context-token';
 import LoggedUser from '../LoggedUser';
 import { FaUser } from 'react-icons/fa';
 import NotificationList from '../NotificationList';
+import logoPrincipal from '../../assets/cidade-verde.png';
 
 
 export default function HeaderClient() {
@@ -15,40 +16,46 @@ export default function HeaderClient() {
 
     return (
         <header className="header-client">
-            <nav className="container">
-                <Link to="/">
-                    <h1>Cidadania Verde</h1>
-                </Link>
-                <div className="navbar-right">
-                    <div className="menu-items-container">
-                        {
-                            contextTokenPayload &&
-                            authService.hasAnyRoles(['ROLE_ADMIN']) &&
-                            <Link to="/admin">
-                                <div className="menu-item">
-                                    <img src={iconAdmin} alt="Admin" />
-                                </div>
-                            </Link>
-                        }
-                        {
-                            authService.isAuthenticated() && (
-                                <>
-                                    <div className="menu-item">
-                                        <NotificationList />
-                                    </div>
-                                    <Link to="/profile">
-                                        <div className="menu-item">
-                                            <FaUser />
-                                        </div>
-                                    </Link>
-                                </>
-                            )
-                        }
+          <nav className="container">
+            <Link to="/">
+              <h1>Cidadania Verde</h1>
+            </Link>
 
+            <div className="header-logo">
+              <Link to="/">
+                <img src={logoPrincipal} alt="Logo do App" />
+              </Link>
+            </div>
+
+            <div className="navbar-right">
+              <div className="menu-items-container">
+                {
+                  contextTokenPayload &&
+                  authService.hasAnyRoles(['ROLE_ADMIN']) &&
+                  <Link to="/admin">
+                    <div className="menu-item">
+                      <img src={iconAdmin} alt="Admin" />
                     </div>
-                    <LoggedUser />
-                </div>
-            </nav>
+                  </Link>
+                }
+                {
+                  authService.isAuthenticated() && (
+                    <>
+                      <div className="menu-item">
+                        <NotificationList />
+                      </div>
+                      <Link to="/profile">
+                        <div className="menu-item">
+                          <FaUser />
+                        </div>
+                      </Link>
+                    </>
+                  )
+                }
+              </div>
+              <LoggedUser />
+            </div>
+          </nav>
         </header>
     );
 }
