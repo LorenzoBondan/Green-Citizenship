@@ -1,6 +1,5 @@
 import { AxiosRequestConfig } from "axios";
 import { requestBackend } from "../utils/requests";
-import { DUserAttachment } from "../models/userAttachment";
 
 const route = "/api/userattachment";
 
@@ -10,24 +9,40 @@ export function findById(id: number) {
     });
 }
 
-export function insert(obj: DUserAttachment) {
+export function insert(postId: number, file: File, name?: string) {
+    const formData = new FormData();
+    formData.append("id", postId.toString());
+    formData.append("file", file);
+    if (name) formData.append("name", name);
+
     const config: AxiosRequestConfig = {
         method: "POST",
         url: `${route}`,
         withCredentials: true,
-        data: obj
-    }
+        data: formData,
+        headers: {
+            "Content-Type": "multipart/form-data"
+        }
+    };
 
     return requestBackend(config);
 }
 
-export function update(obj: DUserAttachment) {
+export function update(postAttachmentId: number, file?: File, name?: string) {
+    const formData = new FormData();
+    formData.append("id", postAttachmentId.toString());
+    if (file) formData.append("file", file);
+    if (name) formData.append("name", name);
+
     const config: AxiosRequestConfig = {
         method: "PUT",
         url: `${route}`,
         withCredentials: true,
-        data: obj
-    }
+        data: formData,
+        headers: {
+            "Content-Type": "multipart/form-data"
+        }
+    };
 
     return requestBackend(config);
 }

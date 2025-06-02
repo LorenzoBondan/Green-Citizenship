@@ -1,6 +1,5 @@
 import { AxiosRequestConfig } from "axios";
 import { requestBackend } from "../utils/requests";
-import { DPostAttachment } from "../models/postAttachment";
 
 const route = "/api/postattachment";
 
