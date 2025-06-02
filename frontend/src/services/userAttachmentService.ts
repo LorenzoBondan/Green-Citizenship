@@ -9,9 +9,9 @@ export function findById(id: number) {
     });
 }
 
-export function insert(postId: number, file: File, name?: string) {
+export function insert(userId: number, file: File, name?: string) {
     const formData = new FormData();
-    formData.append("id", postId.toString());
+    formData.append("id", userId.toString());
     formData.append("file", file);
     if (name) formData.append("name", name);
 
@@ -28,9 +28,9 @@ export function insert(postId: number, file: File, name?: string) {
     return requestBackend(config);
 }
 
-export function update(postAttachmentId: number, file?: File, name?: string) {
+export function update(userAttachmentId: number, file?: File, name?: string) {
     const formData = new FormData();
-    formData.append("id", postAttachmentId.toString());
+    formData.append("id", userAttachmentId.toString());
     if (file) formData.append("file", file);
     if (name) formData.append("name", name);
 
