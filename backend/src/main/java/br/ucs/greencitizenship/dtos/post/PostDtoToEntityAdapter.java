@@ -44,9 +44,9 @@ public class PostDtoToEntityAdapter implements Convertable<Post, PostDTO> {
                         .map(statusEnum -> StatusEnum.valueOf(statusEnum.name()))
                         .orElse(null))
                 .isUrgent(Optional.ofNullable(dto.getIsUrgent()).orElse(false))
-                .postAttachment(Optional.ofNullable(dto.getPostAttachment())
+                /*.postAttachment(Optional.ofNullable(dto.getPostAttachment())
                         .map(postAttachment -> new PostAttachment(postAttachment.getId()))
-                        .orElse(null))
+                        .orElse(null))*/
                 .build();
     }
 

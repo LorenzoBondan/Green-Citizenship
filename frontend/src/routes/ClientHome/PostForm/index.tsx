@@ -4,8 +4,8 @@ import { useContext, useEffect, useState } from 'react';
 import * as forms from '../../../utils/forms';
 import * as postService from '../../../services/postService';
 import * as categoryService from '../../../services/categoryService';
+import * as postAttachmentService from "../../../services/postAttachmentService";
 import { Link } from 'react-router-dom';
-import { DPostAttachment } from '../../../models/postAttachment';
 import { DCategory } from '../../../models/category';
 import { DUser } from '../../../models/user';
 import { DStatusEnum } from '../../../models/enums/statusEnum';
@@ -14,6 +14,7 @@ import FormTextArea from '../../../components/FormTextArea';
 import FormSelect from '../../../components/FormSelect';
 import { AuthContext } from '../../../utils/auth-context';
 import FormCheckbox from '../../../components/FormCheckBox';
+import { DPost } from '../../../models/post';
 
 export default function PostForm() {
 
@@ -25,7 +26,14 @@ export default function PostForm() {
 
     const { user } = useContext(AuthContext);
 
-    const [postAttachment, setPostAttachment] = useState<DPostAttachment>(); // because we send it together
+    const [post, setPost] = useState<DPost | null>(null);
+
+    const [attachmentFile, setAttachmentFile] = useState<File | null>(null);
+    const [attachmentName, setAttachmentName] = useState<string>('');
+
+    const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB em bytes
+
+    const [fileError, setFileError] = useState<string | null>(null);
 
     const [categories, setCategories] = useState<DCategory[]>([]);
 
@@ -92,9 +100,6 @@ export default function PostForm() {
             name: "isUrgent",
             placeholder: "É Urgente"
         },
-
-        // postAttachment
-        
     });
 
     useEffect(() => {
@@ -114,10 +119,15 @@ export default function PostForm() {
         setFormData(forms.updateAndValidate(formData, event.target.name, checked));
     }
 
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
     useEffect(() => {
         if (isEditing) {
             postService.findById(Number(params.postId))
                 .then(response => {
+                    const responsePost = response.data;
+                    setPost(responsePost);
+
                     const newFormData = forms.updateAll(formData, response.data);
                     
                     // enums
@@ -126,18 +136,22 @@ export default function PostForm() {
 
                     // boolean
                     newFormData.isUrgent.value = !!response.data.isUrgent;
-
-                    // postAttachment
     
                     // date
                     setDateTime(response.data.date ? new Date(response.data.date).toISOString().slice(0, 16) : '');
     
                     setFormData(newFormData);
-
-                    setPostAttachment(response.data.postAttachment);
                 });
         }
     }, []);
+
+    useEffect(() => {
+        if (post?.postAttachment?.attachment?.binary?.bytes) {
+            const base64 = post.postAttachment.attachment.binary.bytes;
+            const mimeType = /*post.postAttachment.attachment.mimeType ||*/ "image/png"; // use o tipo correto, se disponível
+            setPreviewUrl(`data:${mimeType};base64,${base64}`);
+        }
+    }, [post]);
 
     function handleInputChange(event: any) {
         setFormData(forms.updateAndValidate(formData, event.target.name, event.target.value));
@@ -159,14 +173,8 @@ export default function PostForm() {
         const requestBody = forms.toValues(formData);
 
         requestBody.author = user;
-
-        // date format
         requestBody.date = dateTime;
 
-        // enum format
-        //requestBody.status = formData.status.value.value;
-
-        // nullable fields
         ['date', 'status', 'isUrgent', 'postAttachment'].forEach((field) => {
             if (requestBody[field] === "") {
                 requestBody[field] = null;
@@ -184,11 +192,26 @@ export default function PostForm() {
             : postService.insert(requestBody);
 
         request
-            .then(() => {
-                navigate("/posts");
+            .then(response => {
+                const createdPostId = isEditing
+                    ? requestBody.id
+                    : response.data.id;
+
+                // se houver imagem, criamos o attachment
+                if (attachmentFile) {
+                    postAttachmentService
+                        .insert(createdPostId, attachmentFile, attachmentName)
+                        .then(() => navigate("/posts"))
+                        .catch(() => {
+                            alert("Post criado, mas falha ao enviar o anexo.");
+                            navigate("/posts");
+                        });
+                } else {
+                    navigate("/posts");
+                }
             })
             .catch(error => {
-                const newInputs = forms.setBackendErrors(formData, error.response.data.errors);
+                const newInputs = forms.setBackendErrors(formData, error.response?.data?.errors || {});
                 setFormData(newInputs);
             });
     }
@@ -236,6 +259,14 @@ export default function PostForm() {
                                 />
                                 <div className="form-error">{formData.category.message}</div>
                             </div>
+                            {previewUrl && (
+                                <img
+                                    src={previewUrl}
+                                    alt={post?.postAttachment?.attachment?.name || "Pré-visualização da imagem"}
+                                    className="form-image-preview"
+                                    style={{ maxWidth: "300px", borderRadius: "8px", marginTop: "10px" }}
+                                />
+                            )}
                             <div>
                                 <FormCheckbox
                                     id={formData.isUrgent.id}
@@ -245,6 +276,33 @@ export default function PostForm() {
                                     onChange={handleCheckboxChange}
                                 />
                                 <div className="form-error">{formData.isUrgent.message}</div>
+                            </div>
+                            <div>
+                                <label htmlFor="attachmentFile">Imagem (opcional)</label>
+                                <input
+                                type="file"
+                                id="attachmentFile"
+                                accept="image/*"
+                                className="form-control"
+                                onChange={(e) => {
+                                    const file = e.target.files?.[0] || null;
+
+                                    if (file && file.size > MAX_FILE_SIZE) {
+                                    setFileError("O arquivo é muito grande. O tamanho máximo permitido é 1MB.");
+                                    setAttachmentFile(null);
+                                    return;
+                                    }
+
+                                    setFileError(null);
+                                    setAttachmentFile(file);
+                                    if (file) setAttachmentName(file.name);
+                                }}
+                                />
+                                {fileError && (
+                                <div className="form-error" style={{ marginTop: "5px" }}>
+                                    {fileError}
+                                </div>
+                                )}
                             </div>
                         </div>
                         <div className="post-form-buttons">
