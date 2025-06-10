@@ -18,6 +18,7 @@ import DialogInfo from "../DialogInfo";
 import DialogConfirmation from "../DialogConfirmation";
 import FormLabel from "../FormLabel";
 import FormSelect from "../FormSelect";
+import avatarPlaceHolder from '../../assets/avatar-placeholder.jpg';
 
 type Props = {
     post: DPost;
@@ -157,8 +158,23 @@ export default function PostCard({ post, user, isAdminPage, onDelete }: Props) {
             </p>
 
             <div className="post-middle-container">
-                <span className="post-author">por {post.author.name}</span>
-                <span className="post-category">{post.category.name}</span>
+            <div className="post-author-info">
+                {post.author.userAttachment?.attachment?.binary?.bytes ? (
+                <img
+                    src={`data:image/png;base64,${post.author.userAttachment.attachment.binary.bytes}`}
+                    alt="Autor"
+                    className="post-author-avatar"
+                />
+                ) : (
+                    <img
+                        src={avatarPlaceHolder}
+                        alt="User"
+                        className="comment-user-avatar"
+                    />
+                )}
+                <span className="post-author-name">por {post.author.name}</span>
+            </div>
+            <span className="post-category">{post.category.name}</span>
             </div>
 
             {previewUrl && (

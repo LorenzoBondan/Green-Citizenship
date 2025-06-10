@@ -5,6 +5,7 @@ import * as userAttachmentService from '../../../services/userAttachmentService'
 import { FaBell } from "react-icons/fa";
 import { AuthContext } from "../../../utils/auth-context";
 import { DNotification } from "../../../models/notification";
+import avatarPlaceHolder from '../../../assets/avatar-placeholder.jpg';
 
 export default function Profile() {
 
@@ -109,7 +110,11 @@ export default function Profile() {
           {previewUrl ? (
             <img src={previewUrl} alt="Foto de perfil" className="profile-avatar" />
           ) : (
-            <div className="profile-avatar-placeholder" />
+            <img
+              src={avatarPlaceHolder}
+              alt="User"
+              className="comment-user-avatar"
+            />
           )}
           <div className="profile-info">
             <h2 className="profile-name">{user?.name}</h2>

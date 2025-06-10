@@ -12,6 +12,7 @@ import { DStatusEnum } from "../../models/enums/statusEnum";
 import { formatLocalDateTime } from "../../utils/formatters";
 import { AuthContext } from '../../utils/auth-context';
 import * as likeService from '../../services/likeService';
+import avatarPlaceHolder from '../../assets/avatar-placeholder.jpg';
 
 type Props = {
     post: DPost;
@@ -86,7 +87,27 @@ export default function PostDetailsCard({ post }: Props) {
 
                 <p><strong>Data de publicação:</strong> {formatLocalDateTime(post.date.toString())}</p>
 
-                <div className="post-footer">
+                <div className="post-author-section mt20">
+                    <h4>Autor</h4>
+                    <div className="post-author-info">
+                        {post.author.userAttachment?.attachment?.binary?.bytes ? (
+                            <img
+                                src={`data:image/png;base64,${post.author.userAttachment.attachment.binary.bytes}`}
+                                alt="Autor"
+                                className="post-author-avatar"
+                            />
+                        ) : (
+                            <img
+                                src={avatarPlaceHolder}
+                                alt="User"
+                                className="comment-user-avatar"
+                            />
+                        )}
+                        <span className="post-author-name">{post.author.name}</span>
+                    </div>
+                </div>
+
+                <div className="post-footer mt20">
                     <div className="post-interactions">
                         <span>
                             {isProjectLiked ? (
