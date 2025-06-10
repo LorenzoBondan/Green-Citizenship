@@ -254,16 +254,6 @@ export default function PostForm() {
                                 <div className="form-error">{formData.title.message}</div>
                             </div>
                             <div>
-                                <label htmlFor="">Descrição</label>
-                                <FormTextArea
-                                    {...formData.description}
-                                    className="form-control textarea"
-                                    onTurnDirty={handleTurnDirty}
-                                    onChange={handleInputChange}
-                                />
-                                <div className="form-error">{formData.description.message}</div>
-                            </div>
-                            <div>
                                 <label htmlFor="">Categoria</label>
                                 <FormSelect
                                     {...formData.category}
@@ -279,25 +269,35 @@ export default function PostForm() {
                                 />
                                 <div className="form-error">{formData.category.message}</div>
                             </div>
-                            {previewUrl && (
-                                <img
-                                    src={previewUrl}
-                                    alt={post?.postAttachment?.attachment?.name || "Pré-visualização da imagem"}
-                                    className="form-image-preview"
-                                    style={{ maxWidth: "300px", borderRadius: "8px", marginTop: "10px" }}
+                            <div className='form-control-wrapper-full'>
+                                <label htmlFor="">Descrição</label>
+                                <FormTextArea
+                                    {...formData.description}
+                                    className="form-control textarea"
+                                    onTurnDirty={handleTurnDirty}
+                                    onChange={handleInputChange}
                                 />
-                            )}
-                            <div>
-                                <FormCheckbox
-                                    id={formData.isUrgent.id}
-                                    name={formData.isUrgent.name}
-                                    label="É Urgente?"
-                                    checked={formData.isUrgent.value}
-                                    onChange={handleCheckboxChange}
-                                />
-                                <div className="form-error">{formData.isUrgent.message}</div>
+                                <div className="form-error">{formData.description.message}</div>
                             </div>
-                            <div>
+                            <FormCheckbox
+                                id={formData.isUrgent.id}
+                                name={formData.isUrgent.name}
+                                label="É Urgente?"
+                                checked={formData.isUrgent.value}
+                                onChange={handleCheckboxChange}
+                            />
+                            <div className="form-error">{formData.isUrgent.message}</div>
+                            {previewUrl && (
+                                <div className='form-control-wrapper-full form-image-container'>
+                                    <img
+                                        src={previewUrl}
+                                        alt={post?.postAttachment?.attachment?.name || "Pré-visualização da imagem"}
+                                        className="form-image-preview"
+                                        style={{ maxWidth: "300px", borderRadius: "8px", marginTop: "10px" }}
+                                    />
+                                </div>
+                            )}
+                            <div className="form-control-wrapper-full">
                                 <label htmlFor="attachmentFile">Imagem (opcional)</label>
                                 <input
                                 type="file"
@@ -308,9 +308,9 @@ export default function PostForm() {
                                     const file = e.target.files?.[0] || null;
 
                                     if (file && file.size > MAX_FILE_SIZE) {
-                                    setFileError("O arquivo é muito grande. O tamanho máximo permitido é 1MB.");
-                                    setAttachmentFile(null);
-                                    return;
+                                        setFileError("O arquivo é muito grande. O tamanho máximo permitido é 1MB.");
+                                        setAttachmentFile(null);
+                                        return;
                                     }
 
                                     setFileError(null);

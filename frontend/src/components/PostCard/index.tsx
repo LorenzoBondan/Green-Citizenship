@@ -162,7 +162,7 @@ export default function PostCard({ post, user, isAdminPage, onDelete }: Props) {
             </div>
 
             {previewUrl && (
-                <div style={{ display: 'flex', justifyContent: 'center', margin: '10px 0' }}>
+                <div className="form-control-wrapper-full form-image-container">
                     <img
                         src={previewUrl}
                         alt={post.postAttachment?.attachment?.name || "Imagem da publicação"}
