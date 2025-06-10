@@ -153,6 +153,16 @@ export default function PostForm() {
         }
     }, [post]);
 
+    useEffect(() => {
+    if (attachmentFile) {
+        const fileReader = new FileReader();
+        fileReader.onloadend = () => {
+            setPreviewUrl(fileReader.result as string);
+        };
+        fileReader.readAsDataURL(attachmentFile);
+    }
+    }, [attachmentFile]);
+
     function handleInputChange(event: any) {
         setFormData(forms.updateAndValidate(formData, event.target.name, event.target.value));
     }
@@ -199,15 +209,25 @@ export default function PostForm() {
 
                 // se houver imagem, criamos o attachment
                 if (attachmentFile) {
-                    postAttachmentService
-                        .insert(createdPostId, attachmentFile, attachmentName)
-                        .then(() => navigate("/posts"))
-                        .catch(() => {
-                            alert("Post criado, mas falha ao enviar o anexo.");
-                            navigate("/posts");
-                        });
-                } else {
-                    navigate("/posts");
+                    const postHasAttachment = post?.postAttachment?.id;
+
+                    const handleSuccess = () => navigate("/posts");
+                    const handleError = () => {
+                        alert("Post salvo, mas falha ao enviar o anexo.");
+                        navigate("/posts");
+                    };
+
+                    if (isEditing && postHasAttachment) {
+                        postAttachmentService
+                            .update(post.postAttachment.id, requestBody.id, attachmentFile, attachmentName)
+                            .then(handleSuccess)
+                            .catch(handleError);
+                    } else {
+                        postAttachmentService
+                            .insert(createdPostId, attachmentFile, attachmentName)
+                            .then(handleSuccess)
+                            .catch(handleError);
+                    }
                 }
             })
             .catch(error => {

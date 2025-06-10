@@ -1,5 +1,5 @@
 import './styles.css';
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { FaHeart, FaRegHeart, FaComment } from "react-icons/fa";
 import {
     MdAutorenew,
@@ -20,6 +20,15 @@ type Props = {
 export default function PostDetailsCard({ post }: Props) {
     const { user } = useContext(AuthContext);
     const [likes, setLikes] = useState(post.likes);
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (post?.postAttachment?.attachment?.binary?.bytes) {
+            const base64 = post.postAttachment.attachment.binary.bytes;
+            const mimeType = "image/png";
+            setPreviewUrl(`data:${mimeType};base64,${base64}`);
+        }
+    }, [post]);
 
     const isProjectLiked = likes.some(like => like.user.id === user?.id);
 
@@ -59,6 +68,22 @@ export default function PostDetailsCard({ post }: Props) {
 
             <div className="post-details-body">
                 <p>{post.description}</p>
+
+                {previewUrl && (
+                    <div style={{ display: 'flex', justifyContent: 'center', margin: '10px 0' }}>
+                        <img
+                            src={previewUrl}
+                            alt={post.postAttachment?.attachment?.name || "Imagem da publicação"}
+                            className="form-image-preview"
+                            style={{
+                                maxWidth: "300px",
+                                borderRadius: "8px",
+                                objectFit: "cover"
+                            }}
+                        />
+                    </div>
+                )}
+
                 <p><strong>Data de publicação:</strong> {formatLocalDateTime(post.date.toString())}</p>
 
                 <div className="post-footer">

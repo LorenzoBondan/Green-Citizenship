@@ -44,7 +44,7 @@ public class PostAttachmentController {
     }
 
     /**
-     * @param id    post id
+     * @param postId    post id
      * @param file      multipart file.
      * @param name      file name
      */
@@ -61,7 +61,7 @@ public class PostAttachmentController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CITIZEN')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> create(
-            @RequestParam("id") Integer id,
+            @RequestParam("postId") Integer postId,
             @RequestParam("file") MultipartFile file,
             @RequestParam(value = "name", required = false) String name) {
 
@@ -74,13 +74,14 @@ public class PostAttachmentController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(service.insert(
                 new PostAttachmentPersist(
-                        null, bytes, name, postService.findById(id)
+                        null, bytes, name, postService.findById(postId)
                 ))
         );
     }
 
     /**
-     * @param id    post id
+     * @param id    postAttachment id
+     * @param postId    post id
      * @param file      multipart file.
      * @param name      file name
      */
@@ -99,6 +100,7 @@ public class PostAttachmentController {
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> update(
             @RequestParam("id") Integer id,
+            @RequestParam("postId") Integer postId,
             @RequestParam(value = "file") MultipartFile file,
             @RequestParam(value = "name", required = false) String name) {
 
@@ -112,7 +114,7 @@ public class PostAttachmentController {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(service.update(new PostAttachmentPersist(
-                id, bytes, name, postService.findById(id)
+                id, bytes, name, postService.findById(postId)
         )));
     }
 

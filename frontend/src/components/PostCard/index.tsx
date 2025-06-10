@@ -13,7 +13,7 @@ import {
     MdErrorOutline
 } from "react-icons/md";
 import { DUser } from "../../models/user";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DialogInfo from "../DialogInfo";
 import DialogConfirmation from "../DialogConfirmation";
 import FormLabel from "../FormLabel";
@@ -29,8 +29,16 @@ type Props = {
 export default function PostCard({ post, user, isAdminPage, onDelete }: Props) {
     const isOwner = user?.id === post.author.id;
     const navigate = useNavigate();
-
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const [likes, setLikes] = useState(post.likes);
+
+    useEffect(() => {
+        if (post?.postAttachment?.attachment?.binary?.bytes) {
+            const base64 = post.postAttachment.attachment.binary.bytes;
+            const mimeType = "image/png";
+            setPreviewUrl(`data:${mimeType};base64,${base64}`);
+        }
+    }, [post]);
 
     const isProjectLiked = likes.some(like => like.user.id === user?.id);
 
@@ -152,6 +160,21 @@ export default function PostCard({ post, user, isAdminPage, onDelete }: Props) {
                 <span className="post-author">por {post.author.name}</span>
                 <span className="post-category">{post.category.name}</span>
             </div>
+
+            {previewUrl && (
+                <div style={{ display: 'flex', justifyContent: 'center', margin: '10px 0' }}>
+                    <img
+                        src={previewUrl}
+                        alt={post.postAttachment?.attachment?.name || "Imagem da publicação"}
+                        className="form-image-preview"
+                        style={{
+                            maxWidth: "300px",
+                            borderRadius: "8px",
+                            objectFit: "cover"
+                        }}
+                    />
+                </div>
+            )}
 
             <div className="post-footer">
                 {!isAdminPage ? (
