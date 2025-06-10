@@ -70,7 +70,19 @@ export default function CommentCard({ comment, user, onDelete }: Props) {
     return (
         <div className="card comment-card">
             <section className="comment-card-top-container">
-                <img src={avatarPlaceHolder} alt="User" className="comment-user-avatar" />
+                {comment.user.userAttachment?.attachment?.binary?.bytes ? (
+                    <img
+                        src={`data:image/png;base64,${comment.user.userAttachment.attachment.binary.bytes}`}
+                        alt="User"
+                        className="comment-user-avatar"
+                    />
+                    ) : (
+                    <img
+                        src={avatarPlaceHolder}
+                        alt="User"
+                        className="comment-user-avatar"
+                    />
+                    )}
                 <div className="comment-user-info">
                     <h5>{comment.user.name}</h5>
                     <p>{formatLocalDateTime(comment.date.toString())}</p>

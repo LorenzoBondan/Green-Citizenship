@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import "./styles.css";
 import * as notificationService from '../../../services/notificationService';
 import * as userAttachmentService from '../../../services/userAttachmentService';
-import { FaBell, FaUserCircle } from "react-icons/fa";
+import { FaBell } from "react-icons/fa";
 import { AuthContext } from "../../../utils/auth-context";
 import { DNotification } from "../../../models/notification";
 
