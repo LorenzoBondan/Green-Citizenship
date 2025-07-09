@@ -229,6 +229,7 @@ export default function PostForm() {
                             .catch(handleError);
                     }
                 }
+                navigate("/posts");
             })
             .catch(error => {
                 const newInputs = forms.setBackendErrors(formData, error.response?.data?.errors || {});
