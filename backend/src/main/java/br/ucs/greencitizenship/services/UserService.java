@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class UserService implements UserDetailsService {
     private final UserRepository repository;
     private final UserDtoToEntityAdapter adapter;
     private final AuthService authService;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public Page<UserDTO> findAll(String name, Pageable pageable){
         Page<User> list = repository.findByNameContainsIgnoreCase(name, pageable);
@@ -51,6 +53,7 @@ public class UserService implements UserDetailsService {
 
     public UserDTO insert(UserDTO dto){
         User entity = adapter.toEntity(dto);
+        entity.setPassword(passwordEncoder.encode(dto.getPassword()));
         entity = repository.save(entity);
         return adapter.toDto(entity);
     }
@@ -61,6 +64,7 @@ public class UserService implements UserDetailsService {
         }
         authService.validateSelfOrAdmin(dto.getId());
         User entity = adapter.toEntity(dto);
+        entity.setPassword(passwordEncoder.encode(dto.getPassword()));
         entity = repository.save(entity);
         return adapter.toDto(entity);
     }
